@@ -3,6 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#f5c842" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="CH7N" />
+  <link rel="apple-touch-icon" href="/icon-192.png" />
   <title>CH7N — شحن ألعاب فوري وآمن</title>
   <meta name="description" content="شحن PUBG Mobile، Free Fire، TikTok Coins بسرعة وأمان. خدمة عملاء حقيقية واحترام للزبون." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -620,6 +627,19 @@
     .fade-up { opacity:0; transform:translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .fade-up.visible { opacity:1; transform:translateY(0); }
 
+
+    .install-banner {
+      display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      z-index: 999; background: linear-gradient(135deg, #f5c842, #e8a820);
+      border-radius: 14px; padding: 12px 20px; box-shadow: 0 8px 32px rgba(245,200,66,0.5);
+      flex-direction: row; align-items: center; gap: 12px; min-width: 280px;
+      animation: fadeUp 0.4s ease;
+    }
+    .install-banner.show { display: flex; }
+    .install-banner-text { color: #0a0a0a; font-size: 0.85rem; font-weight: 800; flex: 1; }
+    .install-banner-sub  { color: rgba(0,0,0,0.6); font-size: 0.68rem; font-weight: 600; }
+    .install-btn-yes { background: #0a0a0a; color: var(--gold); border: none; border-radius: 10px; padding: 8px 16px; font-size: 0.8rem; font-weight: 800; cursor: pointer; font-family: Cairo, sans-serif; white-space: nowrap; }
+    .install-btn-no  { background: none; border: none; color: rgba(0,0,0,0.5); font-size: 1.1rem; cursor: pointer; padding: 4px; }
     /* ══════════════════════════════════════════
        RESPONSIVE
     ══════════════════════════════════════════ */
@@ -1228,5 +1248,48 @@
   updateButton();
   initScrollAnimations();
 </script>
+
+
+  <!-- PWA Install Banner -->
+  <div class="install-banner" id="install-banner">
+    <div>
+      <div class="install-banner-text">📲 ثبّت تطبيق CH7N</div>
+      <div class="install-banner-sub">أضفه للشاشة الرئيسية مجاناً</div>
+    </div>
+    <button class="install-btn-yes" id="install-btn">تثبيت</button>
+    <button class="install-btn-no" onclick="document.getElementById('install-banner').classList.remove('show')">✕</button>
+  </div>
+  <script>
+    // Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('SW registered'))
+          .catch(err => console.log('SW error:', err));
+      });
+    }
+
+    // PWA Install
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      setTimeout(() => {
+        document.getElementById('install-banner').classList.add('show');
+      }, 3000);
+    });
+
+    document.getElementById('install-btn').addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      document.getElementById('install-banner').classList.remove('show');
+    });
+
+    window.addEventListener('appinstalled', () => {
+      document.getElementById('install-banner').classList.remove('show');
+    });
+  </script>
 </body>
 </html>
