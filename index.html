@@ -184,6 +184,18 @@
     }
     .header-sub { font-size: 0.65rem; color: var(--text-2); font-weight: 500; margin-top: 1px; }
 
+
+    .install-header-btn {
+      display: none; align-items: center; gap: 6px;
+      background: linear-gradient(135deg, var(--gold), #e8a820);
+      border: none; border-radius: 10px; padding: 7px 13px;
+      color: #0a0a0a; font-size: 0.7rem; font-weight: 800;
+      cursor: pointer; font-family: Cairo, sans-serif;
+      box-shadow: 0 2px 12px rgba(245,200,66,0.4);
+      transition: var(--transition); white-space: nowrap; flex-shrink: 0;
+    }
+    .install-header-btn.show { display: flex; }
+    .install-header-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(245,200,66,0.6); }
     .live-badge {
       display: flex; align-items: center; gap: 7px;
       background: rgba(34,197,94,0.08);
@@ -674,9 +686,15 @@
             <div class="header-sub">شحن ألعاب فوري وآمن</div>
           </div>
         </div>
-        <div class="live-badge">
-          <span class="live-dot"></span>
-          متاح 24/7
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button class="install-header-btn" id="install-header-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            تثبيت التطبيق
+          </button>
+          <div class="live-badge">
+            <span class="live-dot"></span>
+            متاح 24/7
+          </div>
         </div>
       </div>
     </div>
@@ -1271,23 +1289,32 @@
 
     // PWA Install
     let deferredPrompt;
+
+    async function triggerInstall() {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      document.getElementById('install-header-btn').classList.remove('show');
+      document.getElementById('install-banner').classList.remove('show');
+    }
+
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
+      // إظهار زر الهيدر فوراً
+      document.getElementById('install-header-btn').classList.add('show');
+      // إظهار البانر بعد 3 ثواني
       setTimeout(() => {
         document.getElementById('install-banner').classList.add('show');
       }, 3000);
     });
 
-    document.getElementById('install-btn').addEventListener('click', async () => {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      document.getElementById('install-banner').classList.remove('show');
-    });
+    document.getElementById('install-header-btn').addEventListener('click', triggerInstall);
+    document.getElementById('install-btn').addEventListener('click', triggerInstall);
 
     window.addEventListener('appinstalled', () => {
+      document.getElementById('install-header-btn').classList.remove('show');
       document.getElementById('install-banner').classList.remove('show');
     });
   </script>
