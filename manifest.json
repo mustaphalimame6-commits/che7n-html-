@@ -1,0 +1,28 @@
+{
+  "name": "CH7N — شحن ألعاب فوري وآمن",
+  "short_name": "CH7N",
+  "description": "شحن PUBG Mobile، Free Fire، TikTok Coins بسرعة وأمان",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#030912",
+  "theme_color": "#f5c842",
+  "orientation": "portrait",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "https://res.cloudinary.com/dpsey0ozd/image/upload/v1778942213/75782_oqs0mq.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://res.cloudinary.com/dpsey0ozd/image/upload/v1778942213/75782_oqs0mq.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "categories": ["games", "shopping"]
+}
