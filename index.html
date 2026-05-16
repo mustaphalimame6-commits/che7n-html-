@@ -9,46 +9,34 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet" />
   <style>
-    /* ══════════════════════════════════════════
-       TOKENS & RESET
-    ══════════════════════════════════════════ */
     :root {
       --bg-deep:    #030912;
       --bg-mid:     #060f1e;
       --bg-card:    rgba(255,255,255,0.03);
       --bg-card-h:  rgba(255,255,255,0.06);
-
       --gold:       #f5c842;
       --gold-light: #fde97a;
       --gold-dim:   rgba(245,200,66,0.18);
       --gold-glow:  0 0 24px rgba(245,200,66,0.35);
-
       --cyan:       #00d4f5;
       --cyan-dim:   rgba(0,212,245,0.12);
       --cyan-glow:  0 0 20px rgba(0,212,245,0.3);
-
       --green:      #22c55e;
       --red:        #ef4444;
       --amber:      #f59e0b;
-
       --border:     rgba(245,200,66,0.12);
       --border-h:   rgba(245,200,66,0.35);
-
       --text-1:     #f0f9ff;
       --text-2:     #94a3b8;
       --text-3:     #475569;
-
       --radius-sm:  10px;
       --radius-md:  14px;
       --radius-lg:  20px;
-
       --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
-
     body {
       font-family: 'Cairo', system-ui, sans-serif;
       background: var(--bg-deep);
@@ -58,578 +46,205 @@
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
-
     button { font-family: 'Cairo', sans-serif; cursor: pointer; border: none; background: none; }
     input  { font-family: 'Cairo', sans-serif; }
     a      { text-decoration: none; }
     img    { display: block; }
 
-    /* ══════════════════════════════════════════
-       KEYFRAMES
-    ══════════════════════════════════════════ */
-    @keyframes fadeUp   { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
-    @keyframes float    { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-9px);} }
-    @keyframes mascotFloat { 0%,100%{transform:translateY(0) rotate(0deg);} 33%{transform:translateY(-11px) rotate(-1.2deg);} 66%{transform:translateY(-5px) rotate(1deg);} }
-    @keyframes spinSlow { to { transform: rotate(360deg); } }
-    @keyframes pulse    { 0%,100%{box-shadow:0 0 6px #22c55e;} 50%{box-shadow:0 0 16px #22c55e, 0 0 32px rgba(34,197,94,0.4);} }
-    @keyframes shimmer  { 0%{background-position:-200% center;} 100%{background-position:200% center;} }
-    @keyframes particleDrift { 0%{transform:translateY(0) scale(1);opacity:0;} 8%{opacity:.55;} 92%{opacity:.25;} 100%{transform:translateY(-100vh) scale(.4);opacity:0;} }
-    @keyframes copyPop  { 0%{transform:scale(1);} 50%{transform:scale(1.12);} 100%{transform:scale(1);} }
-    @keyframes glowPulse{ 0%,100%{opacity:.5;} 50%{opacity:.9;} }
-    @keyframes borderFlow { 0%{border-color:rgba(245,200,66,.3);} 50%{border-color:rgba(245,200,66,.75);} 100%{border-color:rgba(245,200,66,.3);} }
-    @keyframes scanline { 0%{transform:translateY(-100%);} 100%{transform:translateY(100vh);} }
+    @keyframes fadeUp        { from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);} }
+    @keyframes float         { 0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);} }
+    @keyframes mascotFloat   { 0%,100%{transform:translateY(0) rotate(0deg);}33%{transform:translateY(-11px) rotate(-1.2deg);}66%{transform:translateY(-5px) rotate(1deg);} }
+    @keyframes spinSlow      { to{transform:rotate(360deg);} }
+    @keyframes pulse         { 0%,100%{box-shadow:0 0 6px #22c55e;}50%{box-shadow:0 0 16px #22c55e,0 0 32px rgba(34,197,94,0.4);} }
+    @keyframes shimmer       { 0%{background-position:-200% center;}100%{background-position:200% center;} }
+    @keyframes particleDrift { 0%{transform:translateY(0) scale(1);opacity:0;}8%{opacity:.55;}92%{opacity:.25;}100%{transform:translateY(-100vh) scale(.4);opacity:0;} }
+    @keyframes copyPop       { 0%{transform:scale(1);}50%{transform:scale(1.12);}100%{transform:scale(1);} }
+    @keyframes glowPulse     { 0%,100%{opacity:.5;}50%{opacity:.9;} }
+    @keyframes borderFlow    { 0%{border-color:rgba(245,200,66,.3);}50%{border-color:rgba(245,200,66,.75);}100%{border-color:rgba(245,200,66,.3);} }
+    @keyframes scanline      { 0%{transform:translateY(-100%);}100%{transform:translateY(100vh);} }
 
-    /* ══════════════════════════════════════════
-       BACKGROUND LAYERS
-    ══════════════════════════════════════════ */
     .bg-grid {
-      position: fixed; inset: 0; pointer-events: none; z-index: 0;
-      background-image:
-        linear-gradient(rgba(245,200,66,.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(245,200,66,.03) 1px, transparent 1px);
-      background-size: 60px 60px;
+      position:fixed;inset:0;pointer-events:none;z-index:0;
+      background-image:linear-gradient(rgba(245,200,66,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(245,200,66,.03) 1px,transparent 1px);
+      background-size:60px 60px;
     }
+    .bg-orb-1,.bg-orb-2,.bg-orb-3{position:fixed;pointer-events:none;z-index:0;border-radius:50%;filter:blur(90px);}
+    .bg-orb-1{width:500px;height:500px;top:-100px;right:-150px;background:radial-gradient(circle,rgba(245,200,66,.07),transparent 70%);animation:glowPulse 6s ease-in-out infinite;}
+    .bg-orb-2{width:400px;height:400px;bottom:10%;left:-120px;background:radial-gradient(circle,rgba(0,212,245,.06),transparent 70%);animation:glowPulse 8s ease-in-out infinite 2s;}
+    .bg-orb-3{width:300px;height:300px;top:40%;left:50%;transform:translateX(-50%);background:radial-gradient(circle,rgba(245,200,66,.04),transparent 70%);animation:glowPulse 10s ease-in-out infinite 4s;}
+    .scanline{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+    .scanline::after{content:'';position:absolute;left:0;right:0;height:2px;background:linear-gradient(transparent,rgba(245,200,66,.04),transparent);animation:scanline 8s linear infinite;}
+    .particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+    .particle{position:absolute;bottom:-10px;background:var(--gold);border-radius:50%;opacity:0;animation:particleDrift linear infinite;box-shadow:0 0 6px var(--gold);}
 
-    .bg-orb-1, .bg-orb-2, .bg-orb-3 {
-      position: fixed; pointer-events: none; z-index: 0; border-radius: 50%;
-      filter: blur(90px);
-    }
-    .bg-orb-1 { width:500px;height:500px; top:-100px; right:-150px; background:radial-gradient(circle,rgba(245,200,66,.07),transparent 70%); animation:glowPulse 6s ease-in-out infinite; }
-    .bg-orb-2 { width:400px;height:400px; bottom:10%; left:-120px; background:radial-gradient(circle,rgba(0,212,245,.06),transparent 70%); animation:glowPulse 8s ease-in-out infinite 2s; }
-    .bg-orb-3 { width:300px;height:300px; top:40%; left:50%; transform:translateX(-50%); background:radial-gradient(circle,rgba(245,200,66,.04),transparent 70%); animation:glowPulse 10s ease-in-out infinite 4s; }
+    .app{position:relative;z-index:1;min-height:100vh;}
+    .container{max-width:680px;margin:0 auto;padding:0 16px;}
 
-    /* scanline effect */
-    .scanline {
-      position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
-    }
-    .scanline::after {
-      content:''; position:absolute; left:0; right:0; height:2px;
-      background:linear-gradient(transparent,rgba(245,200,66,.04),transparent);
-      animation: scanline 8s linear infinite;
-    }
+    .header{position:sticky;top:0;z-index:100;background:rgba(3,9,18,0.92);border-bottom:1px solid var(--border-h);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:10px 0;}
+    .header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0.5;}
+    .header-inner{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+    .header-brand{display:flex;align-items:center;gap:11px;}
+    .header-logo-ring{position:relative;width:46px;height:46px;flex-shrink:0;}
+    .header-logo-ring::before{content:'';position:absolute;inset:-2px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--cyan),var(--gold));z-index:0;animation:spinSlow 4s linear infinite;}
+    .header-logo-ring::after{content:'';position:absolute;inset:1px;border-radius:10px;background:var(--bg-deep);z-index:0;}
+    .header-logo-ring img{width:100%;height:100%;object-fit:cover;border-radius:10px;position:relative;z-index:2;}
+    .header-name{font-family:'Orbitron',monospace;font-size:1.35rem;font-weight:900;background:linear-gradient(135deg,var(--gold-light),var(--gold),#e8a820);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:3px;}
+    .header-sub{font-size:0.65rem;color:var(--text-2);font-weight:500;margin-top:1px;}
+    .live-badge{display:flex;align-items:center;gap:7px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);border-radius:30px;padding:6px 13px;font-size:0.68rem;color:#4ade80;font-weight:700;white-space:nowrap;}
+    .live-dot{width:7px;height:7px;background:#22c55e;border-radius:50%;animation:pulse 2s ease-in-out infinite;}
 
-    /* particles */
-    .particles { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
-    .particle {
-      position:absolute; bottom:-10px; background:var(--gold); border-radius:50%;
-      opacity:0; animation:particleDrift linear infinite;
-      box-shadow:0 0 6px var(--gold);
-    }
+    .hero{padding:42px 0 32px;text-align:center;position:relative;animation:fadeUp 0.7s ease both;}
+    .hero-glow{position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:420px;height:300px;background:radial-gradient(ellipse,rgba(245,200,66,0.1) 0%,transparent 70%);pointer-events:none;animation:glowPulse 5s ease-in-out infinite;}
+    .mascot-wrap{position:relative;display:inline-block;margin-bottom:24px;}
+    .mascot-wrap img{width:165px;height:165px;object-fit:contain;animation:mascotFloat 5s ease-in-out infinite;filter:drop-shadow(0 0 28px rgba(245,200,66,0.4));position:relative;z-index:2;}
+    .mascot-ring{position:absolute;inset:-18px;border-radius:50%;border:1.5px solid rgba(245,200,66,0.2);animation:spinSlow 16s linear infinite;}
+    .mascot-ring::before{content:'';position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:8px;height:8px;background:var(--gold);border-radius:50%;box-shadow:0 0 14px var(--gold);}
+    .mascot-ring-2{position:absolute;inset:-32px;border-radius:50%;border:1px dashed rgba(245,200,66,0.1);animation:spinSlow 24s linear infinite reverse;}
+    .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--gold-dim);border:1px solid var(--border-h);border-radius:30px;padding:5px 16px;font-size:0.7rem;color:var(--gold);font-weight:700;margin-bottom:16px;letter-spacing:1px;}
+    .hero-title{font-size:1.55rem;font-weight:900;line-height:1.65;color:var(--text-1);margin-bottom:10px;}
+    .hero-title .accent{background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .hero-sub{font-size:0.88rem;color:var(--text-2);margin-bottom:28px;}
+    .hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+    .btn-primary{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:var(--radius-md);background:linear-gradient(135deg,var(--gold),#e8a820);color:#0a0a0a;font-size:0.9rem;font-weight:800;box-shadow:0 4px 22px rgba(245,200,66,0.35);transition:var(--transition);}
+    .btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(245,200,66,0.55);}
+    .btn-outline{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:var(--radius-md);border:1px solid var(--border-h);color:var(--gold);font-size:0.9rem;font-weight:700;background:var(--gold-dim);transition:var(--transition);}
+    .btn-outline:hover{background:rgba(245,200,66,0.15);transform:translateY(-3px);box-shadow:var(--gold-glow);}
 
-    /* ══════════════════════════════════════════
-       LAYOUT
-    ══════════════════════════════════════════ */
-    .app { position:relative; z-index:1; min-height:100vh; }
+    .trust-section{padding:6px 0 4px;animation:fadeUp 0.7s ease 0.1s both;}
+    .trust-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+    .trust-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:18px 14px;text-align:center;backdrop-filter:blur(12px);transition:var(--transition);position:relative;overflow:hidden;}
+    .trust-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(245,200,66,0.04),transparent);opacity:0;transition:var(--transition);}
+    .trust-card:hover{border-color:var(--border-h);transform:translateY(-3px);box-shadow:var(--gold-glow);}
+    .trust-card:hover::before{opacity:1;}
+    .trust-icon{font-size:1.8rem;margin-bottom:8px;display:block;}
+    .trust-title{font-size:0.88rem;font-weight:800;color:var(--gold);margin-bottom:4px;}
+    .trust-desc{font-size:0.7rem;color:var(--text-2);line-height:1.55;}
 
-    .container { max-width:680px; margin:0 auto; padding:0 16px; }
+    .divider{display:flex;align-items:center;gap:14px;margin:28px 0 0;color:var(--gold);font-size:0.72rem;font-weight:700;letter-spacing:2px;}
+    .divider::before,.divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border-h));}
+    .divider::after{background:linear-gradient(270deg,transparent,var(--border-h));}
 
-    /* ══════════════════════════════════════════
-       HEADER
-    ══════════════════════════════════════════ */
-    .header {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(3,9,18,0.92);
-      border-bottom: 1px solid var(--border-h);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      padding: 10px 0;
-    }
+    .section{margin-top:22px;}
+    .section-label{display:flex;align-items:center;gap:9px;font-size:0.95rem;font-weight:800;color:var(--text-1);margin-bottom:14px;}
+    .section-label .step-badge{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--gold),#e8a820);color:#0a0a0a;font-size:0.7rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 
-    .header::after {
-      content:'';
-      position:absolute; bottom:-1px; left:0; right:0; height:1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      opacity: 0.5;
-    }
+    .games-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+    .game-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:7px;padding:16px 8px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);backdrop-filter:blur(10px);transition:var(--transition);overflow:hidden;width:100%;}
+    .game-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);background-size:200% auto;opacity:0;transition:var(--transition);}
+    .game-card:hover{border-color:rgba(245,200,66,0.4);transform:translateY(-3px);box-shadow:var(--gold-glow);}
+    .game-card:hover::after{opacity:1;animation:shimmer 1.5s ease-in-out infinite;}
+    .game-card.active{border-color:var(--gold);background:var(--gold-dim);box-shadow:var(--gold-glow),inset 0 0 20px rgba(245,200,66,0.04);}
+    .game-card.active::after{opacity:1;animation:shimmer 1.5s ease-in-out infinite;}
+    .game-img-wrap{width:52px;height:52px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);flex-shrink:0;position:relative;}
+    .game-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform 0.3s ease;}
+    .game-card:hover .game-img-wrap img{transform:scale(1.1);}
+    .game-card.active .game-img-wrap{border-color:rgba(245,200,66,0.4);}
+    .game-name{font-size:0.66rem;font-weight:700;color:var(--text-1);text-align:center;line-height:1.25;}
+    .game-currency{font-size:0.58rem;color:var(--gold);font-weight:600;background:var(--gold-dim);padding:2px 7px;border-radius:8px;border:1px solid rgba(245,200,66,0.2);}
+    .active-dot{position:absolute;top:6px;left:6px;width:8px;height:8px;background:var(--gold);border-radius:50%;box-shadow:0 0 10px var(--gold);display:none;}
+    .game-card.active .active-dot{display:block;}
 
-    .header-inner {
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    }
+    .packages-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+    @media(min-width:420px){.packages-grid{grid-template-columns:repeat(3,1fr);}}
+    .pkg-card{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:18px 10px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);transition:var(--transition);min-height:90px;width:100%;overflow:hidden;}
+    .pkg-card:hover{border-color:rgba(245,200,66,0.4);transform:translateY(-3px);box-shadow:var(--gold-glow);}
+    .pkg-card.active{border-color:var(--gold);background:var(--gold-dim);box-shadow:var(--gold-glow),inset 0 0 24px rgba(245,200,66,0.05);animation:borderFlow 2s ease-in-out infinite;}
+    .pkg-popular{position:absolute;top:0;right:0;background:linear-gradient(135deg,#f59e0b,#ef4444);color:white;font-size:0.54rem;font-weight:800;padding:3px 10px;border-radius:0 var(--radius-md) 0 10px;}
+    .pkg-amount{font-size:1.05rem;font-weight:900;color:var(--text-1);direction:ltr;}
+    .pkg-unit{font-size:0.68rem;font-weight:700;color:var(--gold);}
+    .pkg-price{font-size:0.92rem;font-weight:800;color:var(--green);direction:ltr;}
+    .pkg-mru{font-size:0.62rem;color:#86efac;}
+    .pkg-type-badge{font-size:0.58rem;font-weight:700;color:var(--cyan);background:rgba(0,212,245,0.1);padding:2px 7px;border-radius:6px;border:1px solid rgba(0,212,245,0.2);margin-top:2px;}
 
-    .header-brand { display: flex; align-items: center; gap: 11px; }
+    .input-group{position:relative;}
+    .field-input{width:100%;padding:14px 48px 14px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);color:var(--text-1);font-size:0.95rem;outline:none;transition:var(--transition);text-align:left;direction:ltr;}
+    .field-input::placeholder{color:var(--text-3);text-align:right;direction:rtl;}
+    .field-input:focus{border-color:var(--gold);box-shadow:var(--gold-glow);}
+    .field-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:1rem;pointer-events:none;}
+    .field-hint{margin-top:6px;font-size:0.72rem;color:var(--text-2);}
+    .field-hint.warn{color:var(--amber);}
+    .field-label{font-size:0.78rem;color:var(--text-2);font-weight:600;margin-bottom:8px;display:block;}
 
-    .header-logo-ring {
-      position: relative;
-      width: 46px; height: 46px; flex-shrink: 0;
-    }
-    .header-logo-ring img {
-      width: 100%; height: 100%; object-fit: cover;
-      border-radius: 10px;
-      position: relative; z-index: 1;
-    }
-    .header-logo-ring::before {
-      content:''; position:absolute; inset:-2px; border-radius:12px;
-      background: linear-gradient(135deg, var(--gold), var(--cyan), var(--gold));
-      z-index:0; animation:spinSlow 4s linear infinite;
-    }
-    .header-logo-ring::after {
-      content:''; position:absolute; inset:1px; border-radius:10px;
-      background: var(--bg-deep); z-index:0;
-    }
-    .header-logo-ring img { position:relative; z-index:2; }
+    .payment-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
+    .pay-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:7px;padding:16px 8px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);transition:var(--transition);width:100%;overflow:hidden;}
+    .pay-card:hover{border-color:rgba(245,200,66,0.4);transform:translateY(-3px);box-shadow:var(--gold-glow);}
+    .pay-card.active{border-color:var(--gold);background:var(--gold-dim);box-shadow:var(--gold-glow);}
+    .pay-img-wrap{width:60px;height:32px;display:flex;align-items:center;justify-content:center;}
+    .pay-img-wrap img{width:100%;height:100%;object-fit:contain;}
+    .pay-name{font-size:0.72rem;font-weight:700;color:var(--text-1);}
+    .pay-check{position:absolute;top:6px;left:6px;width:18px;height:18px;background:var(--gold);color:#0a0a0a;border-radius:50%;font-size:0.62rem;display:none;align-items:center;justify-content:center;font-weight:900;}
+    .pay-card.active .pay-check{display:flex;}
 
-    .header-name {
-      font-family: 'Orbitron', monospace;
-      font-size: 1.35rem; font-weight: 900;
-      background: linear-gradient(135deg, var(--gold-light), var(--gold), #e8a820);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text; letter-spacing: 3px;
-    }
-    .header-sub { font-size: 0.65rem; color: var(--text-2); font-weight: 500; margin-top: 1px; }
+    .transfer-box{background:rgba(245,200,66,0.04);border:1px solid var(--border-h);border-radius:var(--radius-md);padding:16px;margin-bottom:4px;}
+    .transfer-label{font-size:0.74rem;color:var(--text-2);font-weight:600;margin-bottom:8px;}
+    .transfer-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px;}
+    .transfer-number{font-size:1.4rem;font-weight:900;color:var(--gold);letter-spacing:3px;direction:ltr;font-family:'Orbitron',monospace;}
+    .copy-btn{padding:5px 13px;background:var(--gold-dim);border:1px solid var(--border-h);border-radius:8px;color:var(--gold);font-size:0.7rem;font-weight:700;transition:var(--transition);white-space:nowrap;flex-shrink:0;}
+    .copy-btn:hover{background:rgba(245,200,66,0.22);box-shadow:var(--gold-glow);}
+    .copy-btn.copied{background:rgba(34,197,94,0.15);border-color:#22c55e;color:#22c55e;animation:copyPop 0.3s ease;}
+    .amount-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap;}
+    .amount-label{font-size:0.74rem;color:var(--text-2);font-weight:600;}
+    .amount-value{font-size:1.05rem;font-weight:900;color:var(--green);direction:ltr;}
+    .transfer-note{font-size:0.72rem;color:var(--amber);font-weight:600;margin-top:10px;}
 
-    .live-badge {
-      display: flex; align-items: center; gap: 7px;
-      background: rgba(34,197,94,0.08);
-      border: 1px solid rgba(34,197,94,0.25);
-      border-radius: 30px; padding: 6px 13px;
-      font-size: 0.68rem; color: #4ade80; font-weight: 700;
-      white-space: nowrap;
-    }
-    .live-dot {
-      width: 7px; height: 7px; background: #22c55e; border-radius: 50%;
-      animation: pulse 2s ease-in-out infinite;
-    }
+    .summary-card{background:var(--bg-card);border:1px solid var(--border-h);border-radius:var(--radius-md);padding:18px;display:none;}
+    .summary-card.visible{display:block;}
+    .summary-title{font-size:0.9rem;font-weight:800;color:var(--gold);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+    .summary-rows{display:flex;flex-direction:column;gap:8px;}
+    .summary-row{display:flex;justify-content:space-between;align-items:center;}
+    .summary-key{font-size:0.78rem;color:var(--text-2);font-weight:500;}
+    .summary-val{font-size:0.83rem;font-weight:700;color:var(--text-1);direction:ltr;text-align:left;}
+    .summary-val.green{color:var(--green);font-size:0.95rem;}
 
-    /* ══════════════════════════════════════════
-       HERO
-    ══════════════════════════════════════════ */
-    .hero {
-      padding: 42px 0 32px; text-align: center; position: relative;
-      animation: fadeUp 0.7s ease both;
-    }
+    .wa-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:17px 24px;border-radius:var(--radius-md);background:linear-gradient(135deg,#22c55e,#16a34a);color:white;font-size:1rem;font-weight:800;box-shadow:0 4px 22px rgba(34,197,94,0.3);transition:var(--transition);}
+    .wa-btn:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 8px 32px rgba(34,197,94,0.5);}
+    .wa-btn:disabled{opacity:0.4;cursor:not-allowed;background:linear-gradient(135deg,#374151,#1f2937);box-shadow:none;}
+    .wa-btn.loading{cursor:wait;opacity:0.85;}
+    .spinner{width:20px;height:20px;border:3px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spinSlow 0.75s linear infinite;flex-shrink:0;}
+    .btn-hint-text{text-align:center;font-size:0.74rem;color:var(--amber);margin-top:8px;font-weight:600;}
 
-    .hero-glow {
-      position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
-      width: 420px; height: 300px;
-      background: radial-gradient(ellipse, rgba(245,200,66,0.1) 0%, transparent 70%);
-      pointer-events: none; animation: glowPulse 5s ease-in-out infinite;
-    }
+    .community{margin-top:32px;}
+    .community-banner{position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(245,200,66,0.05),rgba(0,212,245,0.04));border:1px solid var(--border-h);border-radius:var(--radius-lg);padding:32px 20px;text-align:center;}
+    .community-banner::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:360px;height:250px;background:radial-gradient(ellipse,rgba(245,200,66,0.09),transparent 70%);pointer-events:none;}
+    .community-mascot{width:88px;height:88px;object-fit:contain;margin:0 auto 16px;animation:float 4s ease-in-out infinite;filter:drop-shadow(0 0 16px rgba(245,200,66,0.35));}
+    .community-title{font-size:1.2rem;font-weight:900;color:var(--text-1);margin-bottom:8px;}
+    .community-title .accent{background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .community-sub{font-size:0.82rem;color:var(--text-2);line-height:1.7;margin-bottom:20px;}
+    .phrases{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;text-align:right;}
+    .phrase{display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:10px 14px;}
+    .phrase-icon{font-size:1.1rem;flex-shrink:0;}
+    .phrase-text{font-size:0.8rem;color:var(--text-1);font-weight:600;}
+    .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
+    .stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:14px 8px;text-align:center;}
+    .stat-num{font-size:1.3rem;font-weight:900;color:var(--gold);direction:ltr;font-family:'Orbitron',monospace;}
+    .stat-lbl{font-size:0.65rem;color:var(--text-2);font-weight:600;margin-top:2px;}
+    .testimonials{display:flex;flex-direction:column;gap:10px;text-align:right;}
+    .testimonial{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:14px;position:relative;}
+    .testimonial::before{content:'"';position:absolute;top:8px;left:12px;font-size:2rem;color:var(--gold);opacity:.15;font-family:serif;line-height:1;}
+    .t-stars{color:var(--gold);font-size:0.78rem;margin-bottom:6px;letter-spacing:2px;}
+    .t-text{font-size:0.8rem;color:var(--text-1);line-height:1.65;margin-bottom:8px;font-weight:500;}
+    .t-author{font-size:0.7rem;color:var(--gold);font-weight:700;}
 
-    .mascot-wrap {
-      position: relative; display: inline-block; margin-bottom: 24px;
-    }
-    .mascot-wrap img {
-      width: 165px; height: 165px; object-fit: contain;
-      animation: mascotFloat 5s ease-in-out infinite;
-      filter: drop-shadow(0 0 28px rgba(245,200,66,0.4));
-      position: relative; z-index: 2;
-    }
-    .mascot-ring {
-      position: absolute; inset: -18px; border-radius: 50%;
-      border: 1.5px solid rgba(245,200,66,0.2);
-      animation: spinSlow 16s linear infinite;
-    }
-    .mascot-ring::before {
-      content:''; position:absolute; top:-4px; left:50%; transform:translateX(-50%);
-      width: 8px; height: 8px; background: var(--gold); border-radius: 50%;
-      box-shadow: 0 0 14px var(--gold);
-    }
-    .mascot-ring-2 {
-      position: absolute; inset: -32px; border-radius: 50%;
-      border: 1px dashed rgba(245,200,66,0.1);
-      animation: spinSlow 24s linear infinite reverse;
-    }
+    .footer{margin-top:52px;padding:28px 0 20px;border-top:1px solid var(--border);text-align:center;display:flex;flex-direction:column;align-items:center;gap:13px;}
+    .footer-logo{width:42px;height:42px;object-fit:cover;border-radius:10px;opacity:0.85;}
+    .footer-brand{font-family:'Orbitron',monospace;font-size:1.05rem;font-weight:900;letter-spacing:3px;background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .footer-tagline{font-size:0.74rem;color:var(--text-2);font-weight:500;max-width:260px;line-height:1.55;}
+    .footer-links{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+    .footer-link{display:flex;align-items:center;gap:5px;padding:7px 15px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;color:var(--text-2);font-size:0.72rem;font-weight:600;transition:var(--transition);}
+    .footer-link:hover{border-color:var(--border-h);color:var(--gold);transform:translateY(-2px);}
+    .footer-copy{font-size:0.66rem;color:var(--text-3);}
 
-    .hero-eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--gold-dim); border: 1px solid var(--border-h);
-      border-radius: 30px; padding: 5px 16px;
-      font-size: 0.7rem; color: var(--gold); font-weight: 700;
-      margin-bottom: 16px; letter-spacing: 1px;
-    }
+    .fade-up{opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease;}
+    .fade-up.visible{opacity:1;transform:translateY(0);}
 
-    .hero-title {
-      font-size: 1.55rem; font-weight: 900; line-height: 1.65;
-      color: var(--text-1); margin-bottom: 10px;
-    }
-    .hero-title .accent {
-      background: linear-gradient(135deg, var(--gold-light), var(--gold));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .hero-sub { font-size: 0.88rem; color: var(--text-2); margin-bottom: 28px; }
-
-    .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 13px 28px; border-radius: var(--radius-md);
-      background: linear-gradient(135deg, var(--gold), #e8a820);
-      color: #0a0a0a; font-size: 0.9rem; font-weight: 800;
-      box-shadow: 0 4px 22px rgba(245,200,66,0.35);
-      transition: var(--transition);
-    }
-    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(245,200,66,0.55); }
-
-    .btn-outline {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 13px 28px; border-radius: var(--radius-md);
-      border: 1px solid var(--border-h); color: var(--gold);
-      font-size: 0.9rem; font-weight: 700;
-      background: var(--gold-dim);
-      transition: var(--transition);
-    }
-    .btn-outline:hover { background: rgba(245,200,66,0.15); transform: translateY(-3px); box-shadow: var(--gold-glow); }
-
-    /* ══════════════════════════════════════════
-       TRUST CARDS
-    ══════════════════════════════════════════ */
-    .trust-section { padding: 6px 0 4px; animation: fadeUp 0.7s ease 0.1s both; }
-
-    .trust-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-
-    .trust-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 18px 14px; text-align: center;
-      backdrop-filter: blur(12px);
-      transition: var(--transition);
-      position: relative; overflow: hidden;
-    }
-    .trust-card::before {
-      content:''; position:absolute; inset:0;
-      background: linear-gradient(135deg, rgba(245,200,66,0.04), transparent);
-      opacity: 0; transition: var(--transition);
-    }
-    .trust-card:hover { border-color: var(--border-h); transform: translateY(-3px); box-shadow: var(--gold-glow); }
-    .trust-card:hover::before { opacity: 1; }
-
-    .trust-icon { font-size: 1.8rem; margin-bottom: 8px; display: block; }
-    .trust-title { font-size: 0.88rem; font-weight: 800; color: var(--gold); margin-bottom: 4px; }
-    .trust-desc  { font-size: 0.7rem; color: var(--text-2); line-height: 1.55; }
-
-    /* ══════════════════════════════════════════
-       DIVIDER
-    ══════════════════════════════════════════ */
-    .divider {
-      display: flex; align-items: center; gap: 14px;
-      margin: 28px 0 0; color: var(--gold); font-size: 0.72rem; font-weight: 700; letter-spacing: 2px;
-    }
-    .divider::before, .divider::after {
-      content:''; flex:1; height:1px;
-      background: linear-gradient(90deg, transparent, var(--border-h));
-    }
-    .divider::after { background: linear-gradient(270deg, transparent, var(--border-h)); }
-
-    /* ══════════════════════════════════════════
-       SECTION
-    ══════════════════════════════════════════ */
-    .section { margin-top: 22px; }
-
-    .section-label {
-      display: flex; align-items: center; gap: 9px;
-      font-size: 0.95rem; font-weight: 800; color: var(--text-1); margin-bottom: 14px;
-    }
-    .section-label .step-badge {
-      width: 26px; height: 26px; border-radius: 8px;
-      background: linear-gradient(135deg, var(--gold), #e8a820);
-      color: #0a0a0a; font-size: 0.7rem; font-weight: 900;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-
-    /* ══════════════════════════════════════════
-       GAMES GRID
-    ══════════════════════════════════════════ */
-    .games-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-    @media (min-width: 400px) { .games-grid { grid-template-columns: repeat(3, 1fr); } }
-
-    .game-card {
-      position: relative; display: flex; flex-direction: column; align-items: center; gap: 7px;
-      padding: 16px 8px; background: var(--bg-card);
-      border: 1px solid var(--border); border-radius: var(--radius-md);
-      backdrop-filter: blur(10px); transition: var(--transition); overflow: hidden; width: 100%;
-    }
-    .game-card::after {
-      content:''; position:absolute; bottom:0; left:0; right:0; height:2px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      background-size: 200% auto; opacity:0; transition: var(--transition);
-    }
-    .game-card:hover { border-color: rgba(245,200,66,0.4); transform:translateY(-3px); box-shadow: var(--gold-glow); }
-    .game-card:hover::after { opacity:1; animation: shimmer 1.5s ease-in-out infinite; }
-
-    .game-card.active {
-      border-color: var(--gold); background: var(--gold-dim);
-      box-shadow: var(--gold-glow), inset 0 0 20px rgba(245,200,66,0.04);
-    }
-    .game-card.active::after { opacity:1; animation: shimmer 1.5s ease-in-out infinite; }
-
-    .game-img-wrap {
-      width: 52px; height: 52px; border-radius: 12px; overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.08); flex-shrink: 0; position: relative;
-    }
-    .game-img-wrap img { width:100%; height:100%; object-fit:cover; transition: transform 0.3s ease; }
-    .game-card:hover .game-img-wrap img { transform: scale(1.1); }
-    .game-card.active .game-img-wrap { border-color: rgba(245,200,66,0.4); }
-
-    .game-name { font-size: 0.66rem; font-weight: 700; color: var(--text-1); text-align: center; line-height: 1.25; }
-    .game-currency {
-      font-size: 0.58rem; color: var(--gold); font-weight: 600;
-      background: var(--gold-dim); padding: 2px 7px; border-radius: 8px;
-      border: 1px solid rgba(245,200,66,0.2);
-    }
-
-    .active-dot {
-      position: absolute; top: 6px; left: 6px;
-      width: 8px; height: 8px; background: var(--gold); border-radius: 50%;
-      box-shadow: 0 0 10px var(--gold); display: none;
-    }
-    .game-card.active .active-dot { display: block; }
-
-    /* ══════════════════════════════════════════
-       PACKAGES GRID
-    ══════════════════════════════════════════ */
-    .packages-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    @media (min-width: 420px) { .packages-grid { grid-template-columns: repeat(3, 1fr); } }
-
-    .pkg-card {
-      position: relative; display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 5px; padding: 18px 10px;
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--radius-md); transition: var(--transition); min-height: 90px;
-      width: 100%; overflow: hidden;
-    }
-    .pkg-card:hover { border-color: rgba(245,200,66,0.4); transform: translateY(-3px); box-shadow: var(--gold-glow); }
-    .pkg-card.active {
-      border-color: var(--gold); background: var(--gold-dim);
-      box-shadow: var(--gold-glow), inset 0 0 24px rgba(245,200,66,0.05);
-      animation: borderFlow 2s ease-in-out infinite;
-    }
-
-    .pkg-popular {
-      position: absolute; top: 0; right: 0;
-      background: linear-gradient(135deg, #f59e0b, #ef4444);
-      color: white; font-size: 0.54rem; font-weight: 800;
-      padding: 3px 10px; border-radius: 0 var(--radius-md) 0 10px;
-    }
-
-    .pkg-amount { font-size: 1.05rem; font-weight: 900; color: var(--text-1); direction: ltr; }
-    .pkg-unit   { font-size: 0.68rem; font-weight: 700; color: var(--gold); }
-    .pkg-price  { font-size: 0.92rem; font-weight: 800; color: var(--green); direction: ltr; }
-    .pkg-mru    { font-size: 0.62rem; color: #86efac; }
-
-    /* ══════════════════════════════════════════
-       INPUT
-    ══════════════════════════════════════════ */
-    .input-group { position: relative; }
-
-    .field-input {
-      width: 100%; padding: 14px 48px 14px 16px;
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--radius-md); color: var(--text-1);
-      font-size: 0.95rem; outline: none; transition: var(--transition);
-      text-align: left; direction: ltr;
-    }
-    .field-input::placeholder { color: var(--text-3); text-align: right; direction: rtl; }
-    .field-input:focus { border-color: var(--gold); box-shadow: var(--gold-glow); }
-
-    .field-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 1rem; pointer-events: none; }
-    .field-hint { margin-top: 6px; font-size: 0.72rem; color: var(--text-2); }
-    .field-hint.warn { color: var(--amber); }
-    .field-label { font-size: 0.78rem; color: var(--text-2); font-weight: 600; margin-bottom: 8px; display: block; }
-
-    /* ══════════════════════════════════════════
-       PAYMENT
-    ══════════════════════════════════════════ */
-    .payment-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
-
-    .pay-card {
-      position: relative; display: flex; flex-direction: column; align-items: center; gap: 7px;
-      padding: 16px 8px; background: var(--bg-card);
-      border: 1px solid var(--border); border-radius: var(--radius-md);
-      transition: var(--transition); width: 100%; overflow: hidden;
-    }
-    .pay-card:hover { border-color: rgba(245,200,66,0.4); transform: translateY(-3px); box-shadow: var(--gold-glow); }
-    .pay-card.active { border-color: var(--gold); background: var(--gold-dim); box-shadow: var(--gold-glow); }
-
-    .pay-img-wrap { width: 60px; height: 32px; display: flex; align-items: center; justify-content: center; }
-    .pay-img-wrap img { width: 100%; height: 100%; object-fit: contain; }
-    .pay-name { font-size: 0.72rem; font-weight: 700; color: var(--text-1); }
-
-    .pay-check {
-      position: absolute; top: 6px; left: 6px;
-      width: 18px; height: 18px; background: var(--gold);
-      color: #0a0a0a; border-radius: 50%; font-size: 0.62rem;
-      display: none; align-items: center; justify-content: center; font-weight: 900;
-    }
-    .pay-card.active .pay-check { display: flex; }
-
-    /* Transfer box */
-    .transfer-box {
-      background: rgba(245,200,66,0.04); border: 1px solid var(--border-h);
-      border-radius: var(--radius-md); padding: 16px; margin-bottom: 4px;
-    }
-    .transfer-label { font-size: 0.74rem; color: var(--text-2); font-weight: 600; margin-bottom: 8px; }
-    .transfer-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
-    .transfer-number {
-      font-size: 1.4rem; font-weight: 900; color: var(--gold); letter-spacing: 3px; direction: ltr;
-      font-family: 'Orbitron', monospace;
-    }
-
-    .copy-btn {
-      padding: 5px 13px; background: var(--gold-dim); border: 1px solid var(--border-h);
-      border-radius: 8px; color: var(--gold); font-size: 0.7rem; font-weight: 700;
-      transition: var(--transition); white-space: nowrap; flex-shrink: 0;
-    }
-    .copy-btn:hover { background: rgba(245,200,66,0.22); box-shadow: var(--gold-glow); }
-    .copy-btn.copied {
-      background: rgba(34,197,94,0.15); border-color: #22c55e; color: #22c55e;
-      animation: copyPop 0.3s ease;
-    }
-
-    .amount-row {
-      display: flex; align-items: center; justify-content: space-between; gap: 10px;
-      margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); flex-wrap: wrap;
-    }
-    .amount-label { font-size: 0.74rem; color: var(--text-2); font-weight: 600; }
-    .amount-value { font-size: 1.05rem; font-weight: 900; color: var(--green); direction: ltr; }
-    .transfer-note { font-size: 0.72rem; color: var(--amber); font-weight: 600; margin-top: 10px; }
-
-    /* ══════════════════════════════════════════
-       ORDER SUMMARY
-    ══════════════════════════════════════════ */
-    .summary-card {
-      background: var(--bg-card); border: 1px solid var(--border-h);
-      border-radius: var(--radius-md); padding: 18px; display: none;
-    }
-    .summary-card.visible { display: block; }
-
-    .summary-title {
-      font-size: 0.9rem; font-weight: 800; color: var(--gold);
-      margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border);
-    }
-    .summary-rows { display: flex; flex-direction: column; gap: 8px; }
-    .summary-row { display: flex; justify-content: space-between; align-items: center; }
-    .summary-key { font-size: 0.78rem; color: var(--text-2); font-weight: 500; }
-    .summary-val { font-size: 0.83rem; font-weight: 700; color: var(--text-1); direction: ltr; text-align: left; }
-    .summary-val.green { color: var(--green); font-size: 0.95rem; }
-
-    /* ══════════════════════════════════════════
-       WHATSAPP BUTTON
-    ══════════════════════════════════════════ */
-    .wa-btn {
-      width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
-      padding: 17px 24px; border-radius: var(--radius-md);
-      background: linear-gradient(135deg, #22c55e, #16a34a);
-      color: white; font-size: 1rem; font-weight: 800;
-      box-shadow: 0 4px 22px rgba(34,197,94,0.3);
-      transition: var(--transition);
-    }
-    .wa-btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(34,197,94,0.5); }
-    .wa-btn:disabled { opacity: 0.4; cursor: not-allowed; background: linear-gradient(135deg, #374151, #1f2937); box-shadow: none; }
-    .wa-btn.loading { cursor: wait; opacity: 0.85; }
-
-    .spinner {
-      width: 20px; height: 20px;
-      border: 3px solid rgba(255,255,255,0.3); border-top-color: white;
-      border-radius: 50%; animation: spinSlow 0.75s linear infinite; flex-shrink: 0;
-    }
-
-    .btn-hint-text { text-align: center; font-size: 0.74rem; color: var(--amber); margin-top: 8px; font-weight: 600; }
-
-    /* ══════════════════════════════════════════
-       COMMUNITY
-    ══════════════════════════════════════════ */
-    .community { margin-top: 32px; }
-
-    .community-banner {
-      position: relative; overflow: hidden;
-      background: linear-gradient(135deg, rgba(245,200,66,0.05), rgba(0,212,245,0.04));
-      border: 1px solid var(--border-h); border-radius: var(--radius-lg);
-      padding: 32px 20px; text-align: center;
-    }
-    .community-banner::before {
-      content:''; position:absolute; top:-80px; left:50%; transform:translateX(-50%);
-      width:360px;height:250px;
-      background:radial-gradient(ellipse,rgba(245,200,66,0.09),transparent 70%);
-      pointer-events:none;
-    }
-
-    .community-mascot {
-      width: 88px; height: 88px; object-fit: contain;
-      margin: 0 auto 16px; animation: float 4s ease-in-out infinite;
-      filter: drop-shadow(0 0 16px rgba(245,200,66,0.35));
-    }
-
-    .community-title { font-size: 1.2rem; font-weight: 900; color: var(--text-1); margin-bottom: 8px; }
-    .community-title .accent {
-      background: linear-gradient(135deg, var(--gold-light), var(--gold));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .community-sub { font-size: 0.82rem; color: var(--text-2); line-height: 1.7; margin-bottom: 20px; }
-
-    .phrases { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; text-align: right; }
-    .phrase {
-      display: flex; align-items: center; gap: 10px;
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 10px; padding: 10px 14px;
-    }
-    .phrase-icon { font-size: 1.1rem; flex-shrink: 0; }
-    .phrase-text { font-size: 0.8rem; color: var(--text-1); font-weight: 600; }
-
-    .stats-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 20px; }
-    .stat-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 14px 8px; text-align: center;
-    }
-    .stat-num { font-size: 1.3rem; font-weight: 900; color: var(--gold); direction: ltr; font-family: 'Orbitron', monospace; }
-    .stat-lbl { font-size: 0.65rem; color: var(--text-2); font-weight: 600; margin-top: 2px; }
-
-    .testimonials { display: flex; flex-direction: column; gap: 10px; text-align: right; }
-    .testimonial {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 14px; position: relative;
-    }
-    .testimonial::before {
-      content:'"'; position:absolute; top:8px; left:12px;
-      font-size:2rem; color:var(--gold); opacity:.15; font-family:serif; line-height:1;
-    }
-    .t-stars { color: var(--gold); font-size: 0.78rem; margin-bottom: 6px; letter-spacing: 2px; }
-    .t-text  { font-size: 0.8rem; color: var(--text-1); line-height: 1.65; margin-bottom: 8px; font-weight: 500; }
-    .t-author{ font-size: 0.7rem; color: var(--gold); font-weight: 700; }
-
-    /* ══════════════════════════════════════════
-       FOOTER
-    ══════════════════════════════════════════ */
-    .footer {
-      margin-top: 52px; padding: 28px 0 20px;
-      border-top: 1px solid var(--border);
-      text-align: center; display: flex; flex-direction: column; align-items: center; gap: 13px;
-    }
-    .footer-logo { width: 42px; height: 42px; object-fit: cover; border-radius: 10px; opacity: 0.85; }
-    .footer-brand {
-      font-family: 'Orbitron', monospace; font-size: 1.05rem; font-weight: 900; letter-spacing: 3px;
-      background: linear-gradient(135deg, var(--gold-light), var(--gold));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .footer-tagline { font-size: 0.74rem; color: var(--text-2); font-weight: 500; max-width: 260px; line-height: 1.55; }
-    .footer-links { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-    .footer-link {
-      display: flex; align-items: center; gap: 5px;
-      padding: 7px 15px; background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 10px; color: var(--text-2); font-size: 0.72rem; font-weight: 600;
-      transition: var(--transition);
-    }
-    .footer-link:hover { border-color: var(--border-h); color: var(--gold); transform: translateY(-2px); }
-    .footer-copy { font-size: 0.66rem; color: var(--text-3); }
-
-    /* ══════════════════════════════════════════
-       FADE ANIMATION HELPERS
-    ══════════════════════════════════════════ */
-    .fade-up { opacity:0; transform:translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-    .fade-up.visible { opacity:1; transform:translateY(0); }
-
-    /* ══════════════════════════════════════════
-       RESPONSIVE
-    ══════════════════════════════════════════ */
-    @media (max-width: 360px) {
-      .hero-title { font-size: 1.25rem; }
-      .mascot-wrap img { width: 130px; height: 130px; }
+    @media(max-width:360px){
+      .hero-title{font-size:1.25rem;}
+      .mascot-wrap img{width:130px;height:130px;}
     }
   </style>
 </head>
 <body>
 
-<!-- Background layers -->
 <div class="bg-grid"></div>
 <div class="bg-orb-1"></div>
 <div class="bg-orb-2"></div>
@@ -639,7 +254,6 @@
 
 <div class="app">
 
-  <!-- ══ HEADER ══ -->
   <header class="header">
     <div class="container">
       <div class="header-inner">
@@ -663,7 +277,6 @@
   <main>
     <div class="container">
 
-      <!-- ══ HERO ══ -->
       <section class="hero">
         <div class="hero-glow"></div>
         <div class="mascot-wrap">
@@ -689,46 +302,35 @@
         </div>
       </section>
 
-      <!-- ══ TRUST ══ -->
       <section class="trust-section fade-up">
         <div class="trust-grid">
           <div class="trust-card">
-            <span class="trust-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          </span>
+            <span class="trust-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
             <div class="trust-title">شحن سريع</div>
             <div class="trust-desc">تُنجز طلبك خلال دقائق بعد تأكيد الدفع</div>
           </div>
           <div class="trust-card">
-            <span class="trust-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </span>
+            <span class="trust-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
             <div class="trust-title">دعم حقيقي</div>
             <div class="trust-desc">تواصل مع شخص حقيقي، لا روبوتات</div>
           </div>
           <div class="trust-card">
-            <span class="trust-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </span>
+            <span class="trust-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
             <div class="trust-title">احترام الزبون</div>
             <div class="trust-desc">كل زبون يُعامل باحترام واهتمام كامل</div>
           </div>
           <div class="trust-card">
-            <span class="trust-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          </span>
+            <span class="trust-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
             <div class="trust-title">خدمة آمنة</div>
             <div class="trust-desc">معاملاتك محمية وبياناتك في أمان تام</div>
           </div>
         </div>
       </section>
 
-      <!-- ══ ORDER FLOW ══ -->
       <div id="order-section">
 
         <div class="divider fade-up">— اطلب شحنك الآن —</div>
 
-        <!-- Step 1: Game -->
         <section class="section fade-up">
           <div class="section-label">
             <span class="step-badge">١</span>
@@ -737,7 +339,6 @@
           <div class="games-grid" id="games-grid"></div>
         </section>
 
-        <!-- Step 2: Package -->
         <section class="section fade-up">
           <div class="section-label">
             <span class="step-badge">٢</span>
@@ -746,21 +347,18 @@
           <div class="packages-grid" id="packages-grid"></div>
         </section>
 
-        <!-- Step 3: Player ID -->
         <section class="section fade-up" id="player-id-section">
           <div class="section-label">
             <span class="step-badge">٣</span>
             <span id="player-id-title">معرف اللاعب</span>
           </div>
           <div class="input-group">
-            <input type="text" inputmode="numeric" class="field-input" id="player-id-input"
-              placeholder="أدخل معرف اللاعب" />
+            <input type="text" inputmode="numeric" class="field-input" id="player-id-input" placeholder="أدخل معرف اللاعب" />
             <span class="field-icon">👤</span>
           </div>
           <p class="field-hint" id="player-id-hint">أدخل معرفك الرقمي داخل اللعبة</p>
         </section>
 
-        <!-- Step 4: Payment -->
         <section class="section fade-up">
           <div class="section-label">
             <span class="step-badge">٤</span>
@@ -787,16 +385,12 @@
           <div style="margin-top:14px">
             <label class="field-label" for="sender-input">رقم المحول (الرقم الذي أرسلت منه)</label>
             <div class="input-group">
-              <input type="text" inputmode="numeric" class="field-input" id="sender-input"
-                placeholder="أدخل رقم الهاتف المحول منه" />
-              <span class="field-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .9h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-            </span>
+              <input type="text" inputmode="numeric" class="field-input" id="sender-input" placeholder="أدخل رقم الهاتف المحول منه" />
+              <span class="field-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .9h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span>
             </div>
           </div>
         </section>
 
-        <!-- Order Summary -->
         <div class="section fade-up">
           <div class="summary-card" id="summary-card">
             <div class="summary-title">
@@ -807,39 +401,25 @@
           </div>
         </div>
 
-        <!-- Step 5: WhatsApp -->
         <section class="section fade-up">
           <button class="wa-btn" id="wa-btn" disabled onclick="sendWhatsApp()">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-              <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.856L.057 23.215a.75.75 0 00.928.928l5.359-1.475A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.9 0-3.68-.497-5.223-1.367l-.374-.214-3.882 1.068 1.068-3.882-.214-.374A9.958 9.958 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.856L.057 23.215a.75.75 0 00.928.928l5.359-1.475A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.9 0-3.68-.497-5.223-1.367l-.374-.214-3.882 1.068 1.068-3.882-.214-.374A9.958 9.958 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
             اطلب عبر واتساب
           </button>
           <p class="btn-hint-text" id="btn-hint">الرجاء اختيار باقة أولاً</p>
         </section>
 
-      </div><!-- /order-section -->
+      </div>
 
-      <!-- ══ COMMUNITY ══ -->
       <section class="community fade-up">
         <div class="community-banner">
           <img src="https://res.cloudinary.com/dpsey0ozd/image/upload/v1778943772/mascot-point_hw77zk.png" alt="Mascot" class="community-mascot" />
           <h2 class="community-title">نحن <span class="accent">نبني معاً</span></h2>
-          <p class="community-sub">
-            CH7N مشروع جديد في السوق، ونؤمن بالصدق مع زبائننا.<br />
-            أنتم الشركاء الحقيقيون في نجاحنا.
-          </p>
+          <p class="community-sub">CH7N مشروع جديد في السوق، ونؤمن بالصدق مع زبائننا.<br />أنتم الشركاء الحقيقيون في نجاحنا.</p>
           <div class="phrases">
-            <div class="phrase"><span class="phrase-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M12 12C12 7 7 2 2 2c0 5 5 10 10 10z"/><path d="M12 12c0-5 5-10 10-10-1 5-5 9-10 10z"/></svg>
-            </span><span class="phrase-text">هذا المشروع يبنى معكم — رأيكم يطورنا</span></div>
-            <div class="phrase"><span class="phrase-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-            </span><span class="phrase-text">ثقتكم هي البداية والأساس الذي نبني عليه</span></div>
-            <div class="phrase"><span class="phrase-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-            </span><span class="phrase-text">نحن صادقون: نتعلم ونتطور خطوة بخطوة</span></div>
+            <div class="phrase"><span class="phrase-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M12 12C12 7 7 2 2 2c0 5 5 10 10 10z"/><path d="M12 12c0-5 5-10 10-10-1 5-5 9-10 10z"/></svg></span><span class="phrase-text">هذا المشروع يبنى معكم — رأيكم يطورنا</span></div>
+            <div class="phrase"><span class="phrase-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span><span class="phrase-text">ثقتكم هي البداية والأساس الذي نبني عليه</span></div>
+            <div class="phrase"><span class="phrase-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></span><span class="phrase-text">نحن صادقون: نتعلم ونتطور خطوة بخطوة</span></div>
           </div>
           <div class="stats-grid">
             <div class="stat-card"><div class="stat-num">100+</div><div class="stat-lbl">طلب مكتمل</div></div>
@@ -861,7 +441,6 @@
         </div>
       </section>
 
-      <!-- ══ FOOTER ══ -->
       <footer class="footer fade-up">
         <img src="https://res.cloudinary.com/dpsey0ozd/image/upload/v1778942213/75782_oqs0mq.jpg" alt="CH7N" class="footer-logo" />
         <div class="footer-brand">CH7N</div>
@@ -879,331 +458,357 @@
         <p class="footer-copy">© <span id="year"></span> CH7N — جميع الحقوق محفوظة</p>
       </footer>
 
-    </div><!-- /container -->
+    </div>
   </main>
-</div><!-- /app -->
+</div>
 
 <script>
-  // ══════════════════════════════════════════
-  //  DATA
-  // ══════════════════════════════════════════
-  const GAMES = [
-    {
-      id: 'pubg', name: 'PUBG Mobile', image: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778942233/75787_kdehhg.jpg',
-      currency: 'UC', requiresId: true,
-      packages: [
-        { amount: 60,   currency: 'UC', price: 55 },
-        { amount: 325,  currency: 'UC', price: 210,  popular: true },
-        { amount: 660,  currency: 'UC', price: 410 },
-        { amount: 1800, currency: 'UC', price: 1040 },
-        { amount: 3850, currency: 'UC', price: 2200 },
-      ]
-    },
-    {
-      id: 'freefire', name: 'Free Fire', image: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778942183/75781_vltdms.jpg',
-      currency: 'Diamond', requiresId: true,
-      packages: [
-        { amount: 110,  currency: 'Diamond', price: 48 },
-        { amount: 231,  currency: 'Diamond', price: 95 },
-        { amount: 583,  currency: 'Diamond', price: 235, popular: true },
-        { amount: 1188, currency: 'Diamond', price: 455 },
-        { amount: 2420, currency: 'Diamond', price: 899 },
-      ]
-    },
-    {
-      id: 'tiktok', name: 'TikTok Coins', image: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778942176/75789_gwcefv.png',
-      currency: 'Coin', requiresId: false,
-      packages: [
-        { amount: 70,  currency: 'Coin', price: 60 },
-        { amount: 100, currency: 'Coin', price: 85 },
-        { amount: 200, currency: 'Coin', price: 150 },
-        { amount: 350, currency: 'Coin', price: 220, popular: true },
-      ]
-    },
-  ];
+'use strict';
 
-  const PAYMENTS = [
-    { id: 'bankily', name: 'Bankily', image: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778942177/75779_imo7tf.png', number: '48263620' },
-    { id: 'sedad',   name: 'Sedad',   image: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778942252/75788_glamus.png',   number: '48263620' },
-  ];
+// ══════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════
+const GAMES = [
+  {
+    id: 'pubg', name: 'PUBG Mobile',
+    image: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778956267/f1f72370-cfce-4409-ab66-102d1f4bda33_btqbxz.jpg',
+    currency: 'UC', requiresId: true,
+    packages: [
+      { amount: 60,   currency: 'UC', price: 55 },
+      { amount: 325,  currency: 'UC', price: 210, popular: true },
+      { amount: 660,  currency: 'UC', price: 410 },
+      { amount: 1800, currency: 'UC', price: 1040 },
+      { amount: 3850, currency: 'UC', price: 2200 },
+    ]
+  },
+  {
+    id: 'freefire', name: 'Free Fire',
+    image: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778956090/84b6b6fb-5be3-4c12-9324-ef7cfac79982_jdsbu9.jpg',
+    currency: 'Diamond', requiresId: true,
+    packages: [
+      { amount: 110,        currency: 'Diamond', price: 48 },
+      { amount: 231,        currency: 'Diamond', price: 95 },
+      { amount: 583,        currency: 'Diamond', price: 235, popular: true },
+      { amount: 1188,       currency: 'Diamond', price: 455 },
+      { amount: 2420,       currency: 'Diamond', price: 899 },
+      { amount: '5600+660', currency: 'Diamond', price: 2350 },
+      // عضويات Free Fire
+      { amount: 1, currency: 'عضوية أسبوعية', price: 100, type: 'membership', label: 'عضوية أسبوعية' },
+      { amount: 1, currency: 'عضوية شهرية',  price: 490, type: 'membership', label: 'عضوية شهرية'  },
+    ]
+  },
+  {
+    id: 'tiktok', name: 'TikTok Coins',
+    image: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778956152/free-tiktok-coin-3d-icon-png-download-6220601_jlkusj.png',
+    currency: 'Coin', requiresId: false,
+    packages: [
+      { amount: 70,   currency: 'Coin', price: 60 },
+      { amount: 100,  currency: 'Coin', price: 85 },
+      { amount: 200,  currency: 'Coin', price: 150 },
+      { amount: 350,  currency: 'Coin', price: 220, popular: true },
+      { amount: 500,  currency: 'Coin', price: 300 },
+      { amount: 1000, currency: 'Coin', price: 580 },
+    ]
+  },
+];
 
-  // ══════════════════════════════════════════
-  //  STATE
-  // ══════════════════════════════════════════
-  let selectedGame    = GAMES[0];
-  let selectedPkg     = null;
-  let selectedPayment = null;
-  let copyNumberValue = '';
-  let copyAmountValue = '';
+const PAYMENTS = [
+  { id: 'bankily', name: 'Bankily', image: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778942177/75779_imo7tf.png', number: '48263620' },
+  { id: 'sedad',   name: 'Sedad',   image: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778942252/75788_glamus.png',   number: '48263620' },
+];
 
-  // ══════════════════════════════════════════
-  //  RENDER GAMES
-  // ══════════════════════════════════════════
-  function renderGames() {
-    const grid = document.getElementById('games-grid');
-    grid.innerHTML = GAMES.map(g => `
-      <button class="game-card ${g.id === selectedGame.id ? 'active' : ''}"
-              onclick="selectGame('${g.id}')">
-        <div class="active-dot"></div>
-        <div class="game-img-wrap">
-          <img src="${g.image}" alt="${g.name}" loading="lazy" />
-        </div>
-        <span class="game-name">${g.name}</span>
-        <span class="game-currency">${g.currency}</span>
-      </button>
-    `).join('');
-  }
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+let selectedGame    = GAMES[0];
+let selectedPkg     = null;
+let selectedPayment = null;
+let copyNumberValue = '';
+let copyAmountValue = '';
 
-  // ══════════════════════════════════════════
-  //  RENDER PACKAGES
-  // ══════════════════════════════════════════
-  function renderPackages() {
-    const grid = document.getElementById('packages-grid');
-    grid.innerHTML = selectedGame.packages.map((p, i) => `
-      <button class="pkg-card ${selectedPkg === p ? 'active' : ''}"
-              onclick="selectPkg(${i})">
+// ══════════════════════════════════════════
+//  RENDER GAMES
+// ══════════════════════════════════════════
+function renderGames() {
+  const grid = document.getElementById('games-grid');
+  grid.innerHTML = GAMES.map(g => `
+    <button class="game-card ${g.id === selectedGame.id ? 'active' : ''}" onclick="selectGame('${g.id}')">
+      <div class="active-dot"></div>
+      <div class="game-img-wrap">
+        <img src="${g.image}" alt="${g.name}" loading="lazy" />
+      </div>
+      <span class="game-name">${g.name}</span>
+      <span class="game-currency">${g.currency}</span>
+    </button>
+  `).join('');
+}
+
+// ══════════════════════════════════════════
+//  RENDER PACKAGES
+// ══════════════════════════════════════════
+function renderPackages() {
+  const grid = document.getElementById('packages-grid');
+  grid.innerHTML = selectedGame.packages.map((p, i) => {
+    const isMembership = p.type === 'membership';
+    const imgSrc = isMembership
+      ? (p.label === 'عضوية أسبوعية'
+          ? 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778956090/99d2d99e-8eae-4872-a4e9-4b5a7825518b_picls0.jpg'
+          : 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778956090/990b0595-780c-4f6b-a691-dc84feca36d5_prtgkr.jpg')
+      : null;
+
+    const amountDisplay = isMembership
+      ? p.label
+      : `${p.amount.toLocaleString('en-US')}<span class="pkg-unit"> ${p.currency}</span>`;
+
+    return `
+      <button class="pkg-card ${selectedPkg === p ? 'active' : ''}" onclick="selectPkg(${i})">
         ${p.popular ? '<span class="pkg-popular">الأكثر طلباً</span>' : ''}
-        <div class="pkg-amount">${p.amount.toLocaleString('en-US')}<span class="pkg-unit"> ${p.currency}</span></div>
+        ${isMembership ? `<img src="${imgSrc}" alt="${p.label}" style="width:52px;height:52px;object-fit:contain;margin-bottom:4px;border-radius:8px;" loading="lazy" />` : ''}
+        <div class="pkg-amount">${amountDisplay}</div>
         <div class="pkg-price">${p.price.toLocaleString('en-US')}<span class="pkg-mru"> MRU</span></div>
       </button>
-    `).join('');
-  }
-
-  // ══════════════════════════════════════════
-  //  RENDER PAYMENTS
-  // ══════════════════════════════════════════
-  function renderPayments() {
-    const grid = document.getElementById('payment-grid');
-    grid.innerHTML = PAYMENTS.map(p => `
-      <button class="pay-card ${selectedPayment && selectedPayment.id === p.id ? 'active' : ''}"
-              onclick="selectPayment('${p.id}')">
-        <div class="pay-check">✓</div>
-        <div class="pay-img-wrap">
-          <img src="${p.image}" alt="${p.name}" loading="lazy" />
-        </div>
-        <span class="pay-name">${p.name}</span>
-      </button>
-    `).join('');
-  }
-
-  // ══════════════════════════════════════════
-  //  RENDER PLAYER ID SECTION
-  // ══════════════════════════════════════════
-  function renderPlayerIdSection() {
-    const req = selectedGame.requiresId;
-    const titleEl = document.getElementById('player-id-title');
-    const input   = document.getElementById('player-id-input');
-    const hint    = document.getElementById('player-id-hint');
-
-    if (req) {
-      titleEl.innerHTML = 'معرف اللاعب';
-      input.placeholder = 'أدخل معرف اللاعب (مطلوب)';
-      hint.textContent  = 'أدخل معرفك الرقمي داخل اللعبة';
-      hint.className    = 'field-hint';
-    } else {
-      titleEl.innerHTML = 'معرف اللاعب <small style="color:var(--amber);font-size:.7rem;font-weight:600">(اختياري)</small>';
-      input.placeholder = 'أدخل معرف اللاعب (اختياري)';
-      hint.textContent  = '⚠️ TikTok Coins — المعرف اختياري، يمكنك تركه فارغاً';
-      hint.className    = 'field-hint warn';
-    }
-  }
-
-  // ══════════════════════════════════════════
-  //  RENDER TRANSFER BOX
-  // ══════════════════════════════════════════
-  function renderTransferBox() {
-    const box = document.getElementById('transfer-box');
-    if (!selectedPayment) { box.style.display = 'none'; return; }
-
-    box.style.display = 'block';
-    document.getElementById('transfer-label').textContent  = `رقم التحويل (${selectedPayment.name})`;
-    document.getElementById('transfer-number').textContent = selectedPayment.number;
-    copyNumberValue = selectedPayment.number;
-
-    const amountRow = document.getElementById('amount-row');
-    if (selectedPkg) {
-      amountRow.style.display = 'flex';
-      document.getElementById('amount-display').textContent = `${selectedPkg.price.toLocaleString('en-US')} MRU`;
-      copyAmountValue = selectedPkg.price.toString();
-    } else {
-      amountRow.style.display = 'none';
-    }
-  }
-
-  // ══════════════════════════════════════════
-  //  RENDER SUMMARY
-  // ══════════════════════════════════════════
-  function renderSummary() {
-    const card = document.getElementById('summary-card');
-    if (!selectedPkg) { card.classList.remove('visible'); return; }
-
-    const playerId = document.getElementById('player-id-input').value.trim();
-    const payment  = selectedPayment;
-    card.classList.add('visible');
-
-    let rows = `
-      <div class="summary-row">
-        <span class="summary-key">اللعبة</span>
-        <span class="summary-val">${selectedGame.name}</span>
-      </div>
-      <div class="summary-row">
-        <span class="summary-key">الباقة</span>
-        <span class="summary-val">${selectedPkg.amount.toLocaleString('en-US')} ${selectedPkg.currency}</span>
-      </div>
     `;
-    if (playerId) rows += `
-      <div class="summary-row">
-        <span class="summary-key">معرف اللاعب</span>
-        <span class="summary-val">${playerId}</span>
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+//  RENDER PAYMENTS
+// ══════════════════════════════════════════
+function renderPayments() {
+  const grid = document.getElementById('payment-grid');
+  grid.innerHTML = PAYMENTS.map(p => `
+    <button class="pay-card ${selectedPayment && selectedPayment.id === p.id ? 'active' : ''}" onclick="selectPayment('${p.id}')">
+      <div class="pay-check">✓</div>
+      <div class="pay-img-wrap">
+        <img src="${p.image}" alt="${p.name}" loading="lazy" />
       </div>
-    `;
-    rows += `
-      <div class="summary-row">
-        <span class="summary-key">السعر</span>
-        <span class="summary-val green">${selectedPkg.price.toLocaleString('en-US')} MRU</span>
-      </div>
-    `;
-    if (payment) rows += `
-      <div class="summary-row">
-        <span class="summary-key">طريقة الدفع</span>
-        <span class="summary-val">${payment.name}</span>
-      </div>
-    `;
-    document.getElementById('summary-rows').innerHTML = rows;
+      <span class="pay-name">${p.name}</span>
+    </button>
+  `).join('');
+}
+
+// ══════════════════════════════════════════
+//  RENDER PLAYER ID SECTION
+// ══════════════════════════════════════════
+function renderPlayerIdSection() {
+  const req     = selectedGame.requiresId;
+  const titleEl = document.getElementById('player-id-title');
+  const input   = document.getElementById('player-id-input');
+  const hint    = document.getElementById('player-id-hint');
+
+  if (req) {
+    titleEl.innerHTML = 'معرف اللاعب';
+    input.placeholder = 'أدخل معرف اللاعب (مطلوب)';
+    hint.textContent  = 'أدخل معرفك الرقمي داخل اللعبة';
+    hint.className    = 'field-hint';
+  } else {
+    titleEl.innerHTML = 'معرف اللاعب <small style="color:var(--amber);font-size:.7rem;font-weight:600">(اختياري)</small>';
+    input.placeholder = 'أدخل معرف اللاعب (اختياري)';
+    hint.textContent  = '⚠️ TikTok Coins — المعرف اختياري، يمكنك تركه فارغاً';
+    hint.className    = 'field-hint warn';
   }
+}
 
-  // ══════════════════════════════════════════
-  //  VALIDATE & UPDATE BUTTON
-  // ══════════════════════════════════════════
-  function updateButton() {
-    const btn      = document.getElementById('wa-btn');
-    const hint     = document.getElementById('btn-hint');
-    const playerId = document.getElementById('player-id-input').value.trim();
-    const sender   = document.getElementById('sender-input').value.trim();
-    const idValid  = !selectedGame.requiresId || playerId.length > 0;
+// ══════════════════════════════════════════
+//  RENDER TRANSFER BOX
+// ══════════════════════════════════════════
+function renderTransferBox() {
+  const box = document.getElementById('transfer-box');
+  if (!selectedPayment) { box.style.display = 'none'; return; }
 
-    if (!selectedPkg)           { hint.textContent = 'الرجاء اختيار باقة أولاً';         btn.disabled = true; return; }
-    if (!idValid)               { hint.textContent = 'الرجاء إدخال معرف اللاعب';          btn.disabled = true; return; }
-    if (!selectedPayment)       { hint.textContent = 'الرجاء اختيار طريقة الدفع';         btn.disabled = true; return; }
-    if (sender.length <= 4)     { hint.textContent = 'الرجاء إدخال رقم المحول';            btn.disabled = true; return; }
+  box.style.display = 'block';
+  document.getElementById('transfer-label').textContent  = `رقم التحويل (${selectedPayment.name})`;
+  document.getElementById('transfer-number').textContent = selectedPayment.number;
+  copyNumberValue = selectedPayment.number;
 
-    hint.textContent = '';
+  const amountRow = document.getElementById('amount-row');
+  if (selectedPkg) {
+    amountRow.style.display = 'flex';
+    document.getElementById('amount-display').textContent = `${selectedPkg.price.toLocaleString('en-US')} MRU`;
+    copyAmountValue = selectedPkg.price.toString();
+  } else {
+    amountRow.style.display = 'none';
+  }
+}
+
+// ══════════════════════════════════════════
+//  RENDER SUMMARY
+// ══════════════════════════════════════════
+function renderSummary() {
+  const card = document.getElementById('summary-card');
+  if (!selectedPkg) { card.classList.remove('visible'); return; }
+
+  const playerId = document.getElementById('player-id-input').value.trim();
+  const isMembership = selectedPkg.type === 'membership';
+  const pkgLabel = isMembership
+    ? selectedPkg.label
+    : `${selectedPkg.amount.toLocaleString('en-US')} ${selectedPkg.currency}`;
+
+  card.classList.add('visible');
+
+  let rows = `
+    <div class="summary-row">
+      <span class="summary-key">اللعبة</span>
+      <span class="summary-val">${selectedGame.name}</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-key">الباقة</span>
+      <span class="summary-val">${pkgLabel}</span>
+    </div>
+  `;
+  if (playerId) rows += `
+    <div class="summary-row">
+      <span class="summary-key">معرف اللاعب</span>
+      <span class="summary-val">${playerId}</span>
+    </div>
+  `;
+  rows += `
+    <div class="summary-row">
+      <span class="summary-key">السعر</span>
+      <span class="summary-val green">${selectedPkg.price.toLocaleString('en-US')} MRU</span>
+    </div>
+  `;
+  if (selectedPayment) rows += `
+    <div class="summary-row">
+      <span class="summary-key">طريقة الدفع</span>
+      <span class="summary-val">${selectedPayment.name}</span>
+    </div>
+  `;
+  document.getElementById('summary-rows').innerHTML = rows;
+}
+
+// ══════════════════════════════════════════
+//  VALIDATE & UPDATE BUTTON
+// ══════════════════════════════════════════
+function updateButton() {
+  const btn      = document.getElementById('wa-btn');
+  const hint     = document.getElementById('btn-hint');
+  const playerId = document.getElementById('player-id-input').value.trim();
+  const sender   = document.getElementById('sender-input').value.trim();
+  const idValid  = !selectedGame.requiresId || playerId.length > 0;
+
+  if (!selectedPkg)       { hint.textContent = 'الرجاء اختيار باقة أولاً';       btn.disabled = true; return; }
+  if (!idValid)           { hint.textContent = 'الرجاء إدخال معرف اللاعب';        btn.disabled = true; return; }
+  if (!selectedPayment)   { hint.textContent = 'الرجاء اختيار طريقة الدفع';       btn.disabled = true; return; }
+  if (sender.length <= 4) { hint.textContent = 'الرجاء إدخال رقم المحول';          btn.disabled = true; return; }
+
+  hint.textContent = '';
+  btn.disabled = false;
+}
+
+// ══════════════════════════════════════════
+//  ACTIONS
+// ══════════════════════════════════════════
+function selectGame(id) {
+  selectedGame = GAMES.find(g => g.id === id);
+  selectedPkg  = null;
+  document.getElementById('player-id-input').value = '';
+  renderGames(); renderPackages(); renderPlayerIdSection();
+  renderTransferBox(); renderSummary(); updateButton();
+}
+
+function selectPkg(idx) {
+  selectedPkg = selectedGame.packages[idx];
+  renderPackages(); renderTransferBox(); renderSummary(); updateButton();
+}
+
+function selectPayment(id) {
+  selectedPayment = PAYMENTS.find(p => p.id === id);
+  renderPayments(); renderTransferBox(); renderSummary(); updateButton();
+}
+
+// ══════════════════════════════════════════
+//  COPY
+// ══════════════════════════════════════════
+function copyText(type) {
+  const val   = type === 'number' ? copyNumberValue : copyAmountValue;
+  const btnId = type === 'number' ? 'copy-number-btn' : 'copy-amount-btn';
+  const btn   = document.getElementById(btnId);
+  navigator.clipboard.writeText(val).then(() => {
+    btn.textContent = '✓ تم النسخ';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '⎘ نسخ'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// ══════════════════════════════════════════
+//  WHATSAPP
+// ══════════════════════════════════════════
+function sendWhatsApp() {
+  if (!selectedPkg || !selectedPayment) return;
+  const btn      = document.getElementById('wa-btn');
+  const playerId = document.getElementById('player-id-input').value.trim();
+  const sender   = document.getElementById('sender-input').value.trim();
+  const isMembership = selectedPkg.type === 'membership';
+  const pkgLabel = isMembership
+    ? selectedPkg.label
+    : `${selectedPkg.amount.toLocaleString('en-US')} ${selectedPkg.currency}`;
+
+  btn.classList.add('loading');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span><span>جارٍ الإرسال...</span>';
+
+  const lines = [
+    '🎮 طلب شحن جديد - CH7N', '',
+    `🕹️ اللعبة: ${selectedGame.name}`,
+    `💎 الباقة: ${pkgLabel}`,
+    `💰 السعر: ${selectedPkg.price.toLocaleString('en-US')} MRU`,
+  ];
+  if (playerId) lines.push(`🆔 معرف اللاعب: ${playerId}`);
+  lines.push(`💳 طريقة الدفع: ${selectedPayment.name}`, `📲 رقم المحول: ${sender}`);
+
+  setTimeout(() => {
+    window.open(`https://wa.me/33775202?text=${encodeURIComponent(lines.join('\n'))}`, '_blank', 'noopener,noreferrer');
+    btn.classList.remove('loading');
     btn.disabled = false;
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.856L.057 23.215a.75.75 0 00.928.928l5.359-1.475A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.9 0-3.68-.497-5.223-1.367l-.374-.214-3.882 1.068 1.068-3.882-.214-.374A9.958 9.958 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>اطلب عبر واتساب`;
+  }, 650);
+}
+
+// ══════════════════════════════════════════
+//  PARTICLES
+// ══════════════════════════════════════════
+function initParticles() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.cssText = `
+      left:${(i * 5.2 + 2) % 100}%;
+      animation-delay:${(i * 0.9) % 16}s;
+      animation-duration:${11 + (i * 1.4) % 14}s;
+      width:${2 + (i % 3)}px;
+      height:${2 + (i % 3)}px;
+    `;
+    container.appendChild(p);
   }
+}
 
-  // ══════════════════════════════════════════
-  //  ACTIONS
-  // ══════════════════════════════════════════
-  function selectGame(id) {
-    selectedGame = GAMES.find(g => g.id === id);
-    selectedPkg  = null;
-    document.getElementById('player-id-input').value = '';
-    renderGames(); renderPackages(); renderPlayerIdSection();
-    renderTransferBox(); renderSummary(); updateButton();
-  }
+// ══════════════════════════════════════════
+//  SCROLL ANIMATIONS
+// ══════════════════════════════════════════
+function initScrollAnimations() {
+  const els = document.querySelectorAll('.fade-up');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(el => obs.observe(el));
+}
 
-  function selectPkg(idx) {
-    selectedPkg = selectedGame.packages[idx];
-    renderPackages(); renderTransferBox(); renderSummary(); updateButton();
-  }
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+document.getElementById('year').textContent = new Date().getFullYear();
+document.getElementById('player-id-input').addEventListener('input', () => { renderSummary(); updateButton(); });
+document.getElementById('sender-input').addEventListener('input', () => { updateButton(); });
 
-  function selectPayment(id) {
-    selectedPayment = PAYMENTS.find(p => p.id === id);
-    renderPayments(); renderTransferBox(); renderSummary(); updateButton();
-  }
-
-  // ══════════════════════════════════════════
-  //  COPY BUTTON
-  // ══════════════════════════════════════════
-  function copyText(type) {
-    const val  = type === 'number' ? copyNumberValue : copyAmountValue;
-    const btnId = type === 'number' ? 'copy-number-btn' : 'copy-amount-btn';
-    const btn  = document.getElementById(btnId);
-
-    navigator.clipboard.writeText(val).then(() => {
-      btn.textContent = '✓ تم النسخ';
-      btn.classList.add('copied');
-      setTimeout(() => { btn.textContent = '⎘ نسخ'; btn.classList.remove('copied'); }, 2000);
-    });
-  }
-
-  // ══════════════════════════════════════════
-  //  WHATSAPP
-  // ══════════════════════════════════════════
-  function sendWhatsApp() {
-    if (!selectedPkg || !selectedPayment) return;
-    const btn      = document.getElementById('wa-btn');
-    const playerId = document.getElementById('player-id-input').value.trim();
-    const sender   = document.getElementById('sender-input').value.trim();
-
-    btn.classList.add('loading');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span><span>جارٍ الإرسال...</span>';
-
-    const lines = [
-      '🎮 طلب شحن جديد - CH7N', '',
-      `🕹️ اللعبة: ${selectedGame.name}`,
-      `💎 الباقة: ${selectedPkg.amount.toLocaleString('en-US')} ${selectedPkg.currency}`,
-      `💰 السعر: ${selectedPkg.price.toLocaleString('en-US')} MRU`,
-    ];
-    if (playerId) lines.push(`🆔 معرف اللاعب: ${playerId}`);
-    lines.push(`💳 طريقة الدفع: ${selectedPayment.name}`, `📲 رقم المحول: ${sender}`);
-
-    setTimeout(() => {
-      window.open(`https://wa.me/33775202?text=${encodeURIComponent(lines.join('\n'))}`, '_blank', 'noopener,noreferrer');
-      btn.classList.remove('loading');
-      btn.disabled = false;
-      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.856L.057 23.215a.75.75 0 00.928.928l5.359-1.475A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.9 0-3.68-.497-5.223-1.367l-.374-.214-3.882 1.068 1.068-3.882-.214-.374A9.958 9.958 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>اطلب عبر واتساب`;
-    }, 650);
-  }
-
-  // ══════════════════════════════════════════
-  //  PARTICLES
-  // ══════════════════════════════════════════
-  function initParticles() {
-    const container = document.getElementById('particles');
-    for (let i = 0; i < 20; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.style.cssText = `
-        left:${(i * 5.2 + 2) % 100}%;
-        animation-delay:${(i * 0.9) % 16}s;
-        animation-duration:${11 + (i * 1.4) % 14}s;
-        width:${2 + (i % 3)}px;
-        height:${2 + (i % 3)}px;
-      `;
-      container.appendChild(p);
-    }
-  }
-
-  // ══════════════════════════════════════════
-  //  SCROLL ANIMATIONS
-  // ══════════════════════════════════════════
-  function initScrollAnimations() {
-    const els = document.querySelectorAll('.fade-up');
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-    els.forEach(el => obs.observe(el));
-  }
-
-  // ══════════════════════════════════════════
-  //  LIVE INPUT LISTENERS
-  // ══════════════════════════════════════════
-  document.getElementById('player-id-input').addEventListener('input', () => { renderSummary(); updateButton(); });
-  document.getElementById('sender-input').addEventListener('input', () => { updateButton(); });
-
-  // ══════════════════════════════════════════
-  //  INIT
-  // ══════════════════════════════════════════
-  document.getElementById('year').textContent = new Date().getFullYear();
-  initParticles();
-  renderGames();
-  renderPackages();
-  renderPlayerIdSection();
-  renderPayments();
-  updateButton();
-  initScrollAnimations();
+initParticles();
+renderGames();
+renderPackages();
+renderPlayerIdSection();
+renderPayments();
+updateButton();
+initScrollAnimations();
 </script>
 </body>
 </html>
