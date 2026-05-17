@@ -10,8 +10,20 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="CH7N" />
   <link rel="apple-touch-icon" href="/icon-192.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/icon-192.png" />
+  <link rel="shortcut icon" href="/icon-192.png" />
   <title>CH7N — شحن ألعاب فوري وآمن</title>
   <meta name="description" content="شحن PUBG Mobile، Free Fire، TikTok Coins بسرعة وأمان. خدمة عملاء حقيقية واحترام للزبون." />
+  <meta name="keywords" content="شحن العاب موريتانيا, شحن PUBG, شحن Free Fire, شحن TikTok, UC موريتانيا, Diamond موريتانيا" />
+  <meta property="og:title" content="CH7N — شحن ألعاب فوري وآمن" />
+  <meta property="og:description" content="شحن PUBG Mobile، Free Fire، TikTok Coins بسرعة وأمان في موريتانيا" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://che7ne.vercel.app" />
+  <meta property="og:image" content="https://res.cloudinary.com/dpsey0ozd/image/upload/v1778942213/75782_oqs0mq.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="CH7N — شحن ألعاب فوري وآمن" />
+  <meta name="twitter:description" content="شحن PUBG Mobile، Free Fire، TikTok Coins بسرعة وأمان في موريتانيا" />
+  <link rel="canonical" href="https://che7ne.vercel.app" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet" />
@@ -474,6 +486,12 @@
     }
     .pay-card.active .pay-check { display: flex; }
 
+    .pkg-market-price { font-size: 0.72rem; color: #ef4444; text-decoration: line-through; direction: ltr; font-weight: 600; }
+    .pkg-save { font-size: 0.58rem; color: var(--gold); font-weight: 800; background: rgba(245,200,66,0.12); padding: 2px 6px; border-radius: 6px; border: 1px solid rgba(245,200,66,0.25); }
+    .limited-badge { position: absolute; top: 0; left: 0; background: linear-gradient(135deg, #ef4444, #dc2626); color: white; font-size: 0.5rem; font-weight: 800; padding: 3px 8px; border-radius: 0 0 var(--radius-sm) 0; white-space: nowrap; }
+    .pkg-check { position:absolute; top:6px; left:6px; width:18px; height:18px; background:var(--gold); color:#0a0a0a; border-radius:50%; font-size:0.62rem; display:none; align-items:center; justify-content:center; font-weight:900; }
+    .pkg-card.active .pkg-check { display: flex; }
+
     /* Transfer box */
     .transfer-box {
       background: rgba(245,200,66,0.04); border: 1px solid var(--border-h);
@@ -482,8 +500,8 @@
     .transfer-label { font-size: 0.74rem; color: var(--text-2); font-weight: 600; margin-bottom: 8px; }
     .transfer-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
     .transfer-number {
-      font-size: 1.4rem; font-weight: 900; color: var(--gold); letter-spacing: 3px; direction: ltr;
-      font-family: 'Orbitron', monospace;
+      font-size: 1.5rem; font-weight: 900; color: var(--gold); letter-spacing: 4px; direction: ltr;
+      font-family: 'Cairo', sans-serif;
     }
 
     .copy-btn {
@@ -652,6 +670,50 @@
     .install-banner-sub  { color: rgba(0,0,0,0.6); font-size: 0.68rem; font-weight: 600; }
     .install-btn-yes { background: #0a0a0a; color: var(--gold); border: none; border-radius: 10px; padding: 8px 16px; font-size: 0.8rem; font-weight: 800; cursor: pointer; font-family: Cairo, sans-serif; white-space: nowrap; }
     .install-btn-no  { background: none; border: none; color: rgba(0,0,0,0.5); font-size: 1.1rem; cursor: pointer; padding: 4px; }
+
+    /* زر واتساب ثابت */
+    .wa-float {
+      position: fixed; bottom: 24px; left: 20px; z-index: 200;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(34,197,94,0.5);
+      transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; animation: pulse-wa 2.5s ease-in-out infinite;
+    }
+    .wa-float:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(34,197,94,0.7); }
+    @keyframes pulse-wa { 0%,100%{box-shadow:0 4px 20px rgba(34,197,94,0.5);}50%{box-shadow:0 4px 32px rgba(34,197,94,0.8),0 0 0 8px rgba(34,197,94,0.1);} }
+
+    /* رسالة تأكيد */
+    .success-toast {
+      position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-20px);
+      z-index: 300; background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: white; padding: 14px 24px; border-radius: 14px;
+      font-size: 0.88rem; font-weight: 700; text-align: center;
+      box-shadow: 0 8px 32px rgba(34,197,94,0.4);
+      opacity: 0; transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+      pointer-events: none; white-space: nowrap;
+    }
+    .success-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* كيف تشحن */
+    .howto { margin-top: 28px; }
+    .howto-title { font-size: 1rem; font-weight: 800; color: var(--text-1); margin-bottom: 14px; display:flex; align-items:center; gap:8px; }
+    .howto-steps { display: flex; flex-direction: column; gap: 10px; }
+    .howto-step {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 14px;
+      transition: var(--transition);
+    }
+    .howto-step:hover { border-color: var(--border-h); }
+    .howto-num {
+      width: 32px; height: 32px; border-radius: 10px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--gold), #e8a820);
+      color: #0a0a0a; font-size: 0.8rem; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .howto-text { font-size: 0.82rem; color: var(--text-1); font-weight: 600; line-height: 1.5; }
+    .howto-sub  { font-size: 0.7rem; color: var(--text-2); margin-top: 2px; }
     /* ══════════════════════════════════════════
        RESPONSIVE
     ══════════════════════════════════════════ */
@@ -732,6 +794,44 @@
 
 
       <!-- ══ ORDER FLOW ══ -->
+      <!-- ══ HOW TO ══ -->
+      <section class="howto fade-up">
+        <div class="howto-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          كيف تشحن؟
+        </div>
+        <div class="howto-steps">
+          <div class="howto-step">
+            <div class="howto-num">١</div>
+            <div>
+              <div class="howto-text">اختر اللعبة والباقة</div>
+              <div class="howto-sub">اختر اللعبة التي تريد شحنها ثم اختر الباقة المناسبة</div>
+            </div>
+          </div>
+          <div class="howto-step">
+            <div class="howto-num">٢</div>
+            <div>
+              <div class="howto-text">أدخل معرفك وادفع</div>
+              <div class="howto-sub">أدخل ID اللعبة وحوّل المبلغ عبر Bankily أو Sedad</div>
+            </div>
+          </div>
+          <div class="howto-step">
+            <div class="howto-num">٣</div>
+            <div>
+              <div class="howto-text">أرسل الطلب عبر واتساب</div>
+              <div class="howto-sub">اضغط زر الواتساب وأرسل إيصال التحويل في نفس المحادثة</div>
+            </div>
+          </div>
+          <div class="howto-step">
+            <div class="howto-num">٤</div>
+            <div>
+              <div class="howto-text">استلم شحنتك فوراً ⚡</div>
+              <div class="howto-sub">نُنجز طلبك خلال دقائق بعد تأكيد الدفع</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <div id="order-section">
 
         <div class="divider fade-up">— اطلب شحنك الآن —</div>
@@ -883,11 +983,7 @@
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f5c842" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
             </span><span class="phrase-text">نحن صادقون: نتعلم ونتطور خطوة بخطوة</span></div>
           </div>
-          <div class="stats-grid">
-            <div class="stat-card"><div class="stat-num">100+</div><div class="stat-lbl">طلب مكتمل</div></div>
-            <div class="stat-card"><div class="stat-num">5★</div><div class="stat-lbl">تقييم الزبائن</div></div>
-            <div class="stat-card"><div class="stat-num">24/7</div><div class="stat-lbl">دعم مستمر</div></div>
-          </div>
+
 
           <div class="stats-grid" style="margin-top:20px">
             <div class="stat-card"><div class="stat-num">100+</div><div class="stat-lbl">طلب مكتمل</div></div>
@@ -925,29 +1021,16 @@
   // ══════════════════════════════════════════
   const GAMES = [
     {
-      id: 'pubg', name: 'PUBG Mobile',
-      image: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778942233/75787_kdehhg.jpg',
-      unitImage: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778956267/f1f72370-cfce-4409-ab66-102d1f4bda33_btqbxz.jpg',
-      currency: 'UC', requiresId: true,
-      packages: [
-        { amount: 60,   currency: 'UC', price: 55 },
-        { amount: 325,  currency: 'UC', price: 210,  popular: true },
-        { amount: 660,  currency: 'UC', price: 410 },
-        { amount: 1800, currency: 'UC', price: 1040 },
-        { amount: 3850, currency: 'UC', price: 2200 },
-      ]
-    },
-    {
       id: 'freefire', name: 'Free Fire',
       image: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778942183/75781_vltdms.jpg',
       unitImage: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778956090/84b6b6fb-5be3-4c12-9324-ef7cfac79982_jdsbu9.jpg',
       currency: 'Diamond', requiresId: true,
       packages: [
-        { amount: 110,  currency: 'Diamond', price: 48 },
-        { amount: 231,  currency: 'Diamond', price: 95 },
-        { amount: 583,  currency: 'Diamond', price: 235, popular: true },
-        { amount: 1188, currency: 'Diamond', price: 455 },
-        { amount: 2420, currency: 'Diamond', price: 899 },
+        { amount: 110,  currency: 'Diamond', price: 55,  marketPrice: 65  },
+        { amount: 231,  currency: 'Diamond', price: 100, marketPrice: 130 },
+        { amount: 583,  currency: 'Diamond', price: 250, marketPrice: 270, popular: true },
+        { amount: 1188, currency: 'Diamond', price: 480, marketPrice: 510 },
+        { amount: 2420, currency: 'Diamond', price: 950, marketPrice: 990 },
         { amount: 1,    currency: 'Booyah Pass',    price: 160, isPass: true, passImg: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778956576/Booyah_Pass_f1wdqk.jpg' },
         { amount: 1,    currency: 'عضوية أسبوعية', price: 100, isPass: true, passImg: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778956090/99d2d99e-8eae-4872-a4e9-4b5a7825518b_picls0.jpg' },
         { amount: 1,    currency: 'عضوية شهرية',   price: 490, isPass: true, passImg: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778956090/990b0595-780c-4f6b-a691-dc84feca36d5_prtgkr.jpg' },
@@ -959,12 +1042,25 @@
       unitImage: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778956152/free-tiktok-coin-3d-icon-png-download-6220601_jlkusj.png',
       currency: 'Coin', requiresId: false,
       packages: [
-        { amount: 70,  currency: 'Coin', price: 60 },
-        { amount: 100, currency: 'Coin', price: 85 },
-        { amount: 200, currency: 'Coin', price: 150 },
-        { amount: 350, currency: 'Coin', price: 220, popular: true },
-        { amount: 500,  currency: 'Coin', price: 300 },
-        { amount: 1000, currency: 'Coin', price: 580 },
+        { amount: 70,   currency: 'Coin', price: 60,  marketPrice: 85  },
+        { amount: 100,  currency: 'Coin', price: 85,  marketPrice: 120, popular: true },
+        { amount: 200,  currency: 'Coin', price: 150, marketPrice: 230 },
+        { amount: 350,  currency: 'Coin', price: 220, marketPrice: 270 },
+        { amount: 500,  currency: 'Coin', price: 300, marketPrice: 390 },
+        { amount: 1000, currency: 'Coin', price: 580, marketPrice: 750 },
+      ]
+    },
+    {
+      id: 'pubg', name: 'PUBG Mobile',
+      image: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778942233/75787_kdehhg.jpg',
+      unitImage: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778956267/f1f72370-cfce-4409-ab66-102d1f4bda33_btqbxz.jpg',
+      currency: 'UC', requiresId: true,
+      packages: [
+        { amount: 60,   currency: 'UC', price: 55,   popular: true },
+        { amount: 325,  currency: 'UC', price: 210  },
+        { amount: 660,  currency: 'UC', price: 430  },
+        { amount: 1800, currency: 'UC', price: 1040 },
+        { amount: 3850, currency: 'UC', price: 2200 },
       ]
     },
   ];
@@ -1011,17 +1107,23 @@
       if (p.isPass) {
         return `
           <button class="pkg-card ${selectedPkg === p ? 'active' : ''}" onclick="selectPkg(${i})">
+            <div class="pkg-check">✓</div>
             <img src="${p.passImg}" class="pkg-pass-img" alt="${p.currency}" loading="lazy" />
             <div class="pkg-unit" style="font-size:0.72rem;margin-top:2px">${p.currency}</div>
             <div class="pkg-price">${p.price.toLocaleString('en-US')}<span class="pkg-mru"> MRU</span></div>
           </button>`;
       }
+      const save = p.marketPrice ? p.marketPrice - p.price : 0;
       return `
         <button class="pkg-card ${selectedPkg === p ? 'active' : ''}" onclick="selectPkg(${i})">
+          <div class="pkg-check">✓</div>
+          ${p.marketPrice ? '<span class="limited-badge">⏳ عرض محدود</span>' : ''}
           ${p.popular ? '<span class="pkg-popular">الأكثر طلباً</span>' : ''}
           <img src="${unitImg}" class="pkg-unit-img" alt="${p.currency}" loading="lazy" />
           <div class="pkg-amount">${p.amount.toLocaleString('en-US')}<span class="pkg-unit"> ${p.currency}</span></div>
+          ${p.marketPrice ? `<div class="pkg-market-price">${p.marketPrice.toLocaleString('en-US')} MRU</div>` : ''}
           <div class="pkg-price">${p.price.toLocaleString('en-US')}<span class="pkg-mru"> MRU</span></div>
+          ${save > 0 ? `<div class="pkg-save">وفّر ${save} MRU</div>` : ''}
         </button>`;
     }).join('');
   }
@@ -1157,16 +1259,25 @@
     document.getElementById('player-id-input').value = '';
     renderGames(); renderPackages(); renderPlayerIdSection();
     renderTransferBox(); renderSummary(); updateButton();
+    setTimeout(() => {
+      document.getElementById('packages-grid').closest('.section').scrollIntoView({behavior:'smooth', block:'nearest'});
+    }, 600);
   }
 
   function selectPkg(idx) {
     selectedPkg = selectedGame.packages[idx];
     renderPackages(); renderTransferBox(); renderSummary(); updateButton();
+    setTimeout(() => {
+      document.getElementById('player-id-section').scrollIntoView({behavior:'smooth', block:'nearest'});
+    }, 600);
   }
 
   function selectPayment(id) {
     selectedPayment = PAYMENTS.find(p => p.id === id);
     renderPayments(); renderTransferBox(); renderSummary(); updateButton();
+    setTimeout(() => {
+      document.getElementById('summary-card').scrollIntoView({behavior:'smooth', block:'nearest'});
+    }, 600);
   }
 
   // ══════════════════════════════════════════
@@ -1208,6 +1319,10 @@
 
     setTimeout(() => {
       window.open(`https://wa.me/33775202?text=${encodeURIComponent(lines.join('\n'))}`, '_blank', 'noopener,noreferrer');
+      // رسالة تأكيد
+      const toast = document.getElementById('success-toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 4000);
       btn.classList.remove('loading');
       btn.disabled = false;
       btn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.856L.057 23.215a.75.75 0 00.928.928l5.359-1.475A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.9 0-3.68-.497-5.223-1.367l-.374-.214-3.882 1.068 1.068-3.882-.214-.374A9.958 9.958 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>اطلب عبر واتساب`;
@@ -1248,7 +1363,21 @@
   //  LIVE INPUT LISTENERS
   // ══════════════════════════════════════════
   document.getElementById('player-id-input').addEventListener('input', () => { renderSummary(); updateButton(); });
+  document.getElementById('player-id-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      e.target.blur();
+      document.getElementById('payment-grid').closest('.section').scrollIntoView({behavior:'smooth', block:'nearest'});
+    }
+  });
   document.getElementById('sender-input').addEventListener('input', () => { updateButton(); });
+  document.getElementById('sender-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      e.target.blur();
+      document.getElementById('wa-btn').scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  });
 
   // ══════════════════════════════════════════
   //  INIT
@@ -1264,6 +1393,20 @@
 </script>
 
 
+
+  <!-- زر واتساب ثابت -->
+  <a href="https://wa.me/33775202" target="_blank" rel="noopener noreferrer" class="wa-float" title="تواصل معنا">
+    <svg viewBox="0 0 24 24" fill="white" width="28" height="28">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+      <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.856L.057 23.215a.75.75 0 00.928.928l5.359-1.475A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.9 0-3.68-.497-5.223-1.367l-.374-.214-3.882 1.068 1.068-3.882-.214-.374A9.958 9.958 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+    </svg>
+  </a>
+
+  <!-- رسالة تأكيد -->
+  <div class="success-toast" id="success-toast">
+    ✅ تم إرسال طلبك! سنتواصل معك خلال دقائق
+  </div>
+
   <!-- PWA Install Banner -->
   <div class="install-banner" id="install-banner">
     <div>
@@ -1274,6 +1417,26 @@
     <button class="install-btn-no" onclick="document.getElementById('install-banner').classList.remove('show')">✕</button>
   </div>
   <script>
+    // إخفاء زر الواتساب الثابت عند ظهور زر الإرسال
+    const waFloatBtn = document.querySelector('.wa-float');
+    const waSendBtn  = document.getElementById('wa-btn');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          waFloatBtn.style.opacity = '0';
+          waFloatBtn.style.pointerEvents = 'none';
+          waFloatBtn.style.transform = 'scale(0.7)';
+        } else {
+          waFloatBtn.style.opacity = '1';
+          waFloatBtn.style.pointerEvents = 'auto';
+          waFloatBtn.style.transform = 'scale(1)';
+        }
+      });
+    }, { threshold: 0.5 });
+
+    observer.observe(waSendBtn);
+
     // Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
