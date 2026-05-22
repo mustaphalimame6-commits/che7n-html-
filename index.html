@@ -1323,10 +1323,9 @@
 
     // ══ حفظ في Google Sheets ══
     const orderNum = 'CH7N-' + Math.floor(1000 + Math.random() * 9000);
-    fetch('https://script.google.com/macros/s/AKfycbwf_SSZzg1cmfsPP0cpA_YjdlP0dXdlS0h_pnyuAt2z--wlnQO4awSbrONT1GmaaWhl/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbwsItPrSflVwPeoWnWWPmab_pmOTV2A15SqhQugfyR0ZHxZhw23yVP1lTq5ahD52YWP/exec', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+      body: new URLSearchParams({
         orderId:       orderNum,
         game:          selectedGame.name,
         package:       `${selectedPkg.amount.toLocaleString('en-US')} ${selectedPkg.currency}`,
