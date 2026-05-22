@@ -737,6 +737,8 @@
         </div>
       </section>
 
+
+
       <!-- ══ ORDER FLOW ══ -->
         <!-- مؤقت العرض -->
         <div class="timer-wrap fade-up">
@@ -930,6 +932,7 @@
         </div>
       </section>
 
+
       <!-- ══ FAQ ══ -->
       <section class="faq fade-up">
         <div class="faq-title">
@@ -997,6 +1000,7 @@
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1877F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
             </span><span class="phrase-text">نحن صادقون: نتعلم ونتطور خطوة بخطوة</span></div>
           </div>
+
 
           <div class="stats-grid" style="margin-top:20px">
             <div class="stat-card"><div class="stat-num">100+</div><div class="stat-lbl">طلب مكتمل</div></div>
@@ -1317,6 +1321,22 @@
     const playerId = document.getElementById('player-id-input').value.trim();
     const sender   = document.getElementById('sender-input').value.trim();
 
+    // ══ حفظ في Google Sheets ══
+    const orderNum = 'CH7N-' + Math.floor(1000 + Math.random() * 9000);
+    fetch('https://script.google.com/macros/s/AKfycbwf_SSZzg1cmfsPP0cpA_YjdlP0dXdlS0h_pnyuAt2z--wlnQO4awSbrONT1GmaaWhl/exec', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        orderId:       orderNum,
+        game:          selectedGame.name,
+        package:       `${selectedPkg.amount.toLocaleString('en-US')} ${selectedPkg.currency}`,
+        playerId:      playerId || '—',
+        price:         selectedPkg.price,
+        paymentMethod: selectedPayment.name + ' | ' + sender
+      })
+    }).catch(() => {});
+    // ═════════════════════════
+
     btn.classList.add('loading');
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span><span>جارٍ الإرسال...</span>';
@@ -1324,7 +1344,6 @@
     const now = new Date();
     const timeStr = now.toLocaleTimeString('ar-SA', {hour:'2-digit', minute:'2-digit'});
     const dateStr = now.toLocaleDateString('ar-SA', {day:'2-digit', month:'2-digit', year:'numeric'});
-    const orderNum = 'CH7N-' + Math.floor(1000 + Math.random() * 9000);
 
     const lines = [
       `🎮 طلب شحن جديد`, `🔢 رقم الطلب: #${orderNum}`,
@@ -1411,6 +1430,8 @@
   initScrollAnimations();
 </script>
 
+
+
   <!-- زر واتساب ثابت -->
   <a href="https://wa.me/33775202" target="_blank" rel="noopener noreferrer" class="wa-float" title="تواصل معنا">
     <svg viewBox="0 0 24 24" fill="white" width="28" height="28">
@@ -1434,6 +1455,7 @@
     <button class="install-btn-no" onclick="document.getElementById('install-banner').classList.remove('show')">✕</button>
   </div>
   <script>
+
 
     function toggleFaq(item) {
       const isOpen = item.classList.contains('open');
@@ -1492,57 +1514,35 @@
     }
 
     // PWA Install
-    let deferredPrompt = null;
-    const installHeaderBtn = document.getElementById('install-header-btn');
-    const installBanner    = document.getElementById('install-banner');
-    const installBtn       = document.getElementById('install-btn');
-
-    function showInstallUI() {
-      installHeaderBtn.classList.add('show');
-      setTimeout(() => installBanner.classList.add('show'), 3000);
-    }
-
-    function hideInstallUI() {
-      installHeaderBtn.classList.remove('show');
-      installBanner.classList.remove('show');
-    }
+    let deferredPrompt;
 
     async function triggerInstall() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        deferredPrompt = null;
-        if (outcome === 'accepted') hideInstallUI();
-      } else {
-        // fallback: إرشاد يدوي للمتصفحات التي لا تدعم الحدث (iOS/Samsung)
-        alert('لتثبيت التطبيق:\n\nأندرويد: اضغط على قائمة المتصفح ← "إضافة إلى الشاشة الرئيسية"\niPhone: اضغط زر المشاركة ← "إضافة إلى الشاشة الرئيسية"');
-      }
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      document.getElementById('install-header-btn').classList.remove('show');
+      document.getElementById('install-banner').classList.remove('show');
     }
 
-    // الحدث الرسمي (Chrome/Edge على Android)
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      showInstallUI();
+      // إظهار زر الهيدر فوراً
+      document.getElementById('install-header-btn').classList.add('show');
+      // إظهار البانر بعد 3 ثواني
+      setTimeout(() => {
+        document.getElementById('install-banner').classList.add('show');
+      }, 3000);
     });
 
-    installHeaderBtn.addEventListener('click', triggerInstall);
-    installBtn.addEventListener('click', triggerInstall);
+    document.getElementById('install-header-btn').addEventListener('click', triggerInstall);
+    document.getElementById('install-btn').addEventListener('click', triggerInstall);
 
-    window.addEventListener('appinstalled', hideInstallUI);
-
-    // Fallback: إظهار زر الهيدر والبانر دائماً إذا لم يُطلق beforeinstallprompt
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches
-                      || window.navigator.standalone === true;
-    if (!isStandalone) {
-      setTimeout(() => {
-        // إظهار زر الهيدر دائماً سواء دعم المتصفح الحدث أم لا
-        installHeaderBtn.classList.add('show');
-        if (!deferredPrompt) {
-          installBanner.classList.add('show');
-        }
-      }, 2000);
-    }
+    window.addEventListener('appinstalled', () => {
+      document.getElementById('install-header-btn').classList.remove('show');
+      document.getElementById('install-banner').classList.remove('show');
+    });
   </script>
 </body>
 </html>
