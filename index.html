@@ -1045,10 +1045,9 @@
       packages: [
         { amount: 110,  currency: 'Diamond', price: 55,  marketPrice: 65  },
         { amount: 231,  currency: 'Diamond', price: 100, marketPrice: 130 },
-        { amount: 530,  currency: 'Diamond', price: 250, marketPrice: 270, popular: true },
-        { amount: 1080, currency: 'Diamond', price: 480, marketPrice: 510 },
-        { amount: 2200, currency: 'Diamond', price: 950, marketPrice: 990 },
-        { amount: 5600, currency: 'Diamond', price: 2350 },
+        { amount: 583,  currency: 'Diamond', price: 250, marketPrice: 270, popular: true },
+        { amount: 1188, currency: 'Diamond', price: 480, marketPrice: 510 },
+        { amount: 2420, currency: 'Diamond', price: 950, marketPrice: 990 },
         { amount: 1,    currency: 'Booyah Pass',    price: 160, isPass: true, passImg: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778956576/Booyah_Pass_f1wdqk.jpg' },
         { amount: 1,    currency: 'عضوية أسبوعية', price: 100, isPass: true, passImg: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778956090/99d2d99e-8eae-4872-a4e9-4b5a7825518b_picls0.jpg' },
         { amount: 1,    currency: 'عضوية شهرية',   price: 490, isPass: true, passImg: 'https://res.cloudinary.com/dpsey0ozd/image/upload/v1778956090/990b0595-780c-4f6b-a691-dc84feca36d5_prtgkr.jpg' },
@@ -1324,7 +1323,7 @@
 
     // ══ حفظ في Google Sheets ══
     const orderNum = 'CH7N-' + Math.floor(1000 + Math.random() * 9000);
-    fetch('https://script.google.com/macros/s/AKfycbz23P2R5hNXkdo3ssMaSxWJwEMewitTG7Esg2XinGRO5_BuyjM8UEPaR7V-6j5tVQv_/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbxwPOIXSLnWdUQspY6cYRhaQVlALwjhCyWArKJvGhNOnfm3cPSa05x21Eot-6e5tzRX/exec', {
       method: 'POST',
       body: new URLSearchParams({
         orderId:       orderNum,
@@ -1418,64 +1417,6 @@
   });
 
   // ══════════════════════════════════════════
-  //  FETCH PRICES FROM SHEETS
-  // ══════════════════════════════════════════
-  const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz23P2R5hNXkdo3ssMaSxWJwEMewitTG7Esg2XinGRO5_BuyjM8UEPaR7V-6j5tVQv_/exec';
-  const CACHE_KEY  = 'ch7n_prices';
-  const CACHE_TTL  = 60 * 60 * 1000; // ساعة واحدة
-
-  function applyPrices(prices) {
-    prices.forEach(row => {
-      const game = GAMES.find(g => g.name === row.game);
-      if (!game) return;
-      const pkg = game.packages.find(p => {
-        const label = p.isPass
-          ? p.currency
-          : `${p.amount.toLocaleString('en-US')} ${p.currency}`;
-        // مقارنة غير حساسة لحالة الأحرف
-        return label.toLowerCase().trim() === String(row.package).toLowerCase().trim();
-      });
-      if (pkg) pkg.price = Number(row.price);
-    });
-    renderPackages();
-    renderSummary();
-    updateButton();
-  }
-
-  function fetchPrices() {
-    // تحقق من Cache أولاً
-    try {
-      const cached = localStorage.getItem(CACHE_KEY);
-      if (cached) {
-        const { time, prices } = JSON.parse(cached);
-        if (Date.now() - time < CACHE_TTL) {
-          applyPrices(prices);
-          // جلب في الخلفية لتحديث الـ Cache
-          fetchFromSheets();
-          return;
-        }
-      }
-    } catch(e) {}
-    // لا يوجد Cache — جلب مباشر
-    fetchFromSheets();
-  }
-
-  function fetchFromSheets() {
-    fetch(SHEETS_URL)
-      .then(r => r.json())
-      .then(data => {
-        if (data.status === 'success' && data.prices) {
-          localStorage.setItem(CACHE_KEY, JSON.stringify({
-            time: Date.now(),
-            prices: data.prices
-          }));
-          applyPrices(data.prices);
-        }
-      })
-      .catch(() => {}); // عند الفشل تبقى الأسعار الافتراضية
-  }
-
-  // ══════════════════════════════════════════
   //  INIT
   // ══════════════════════════════════════════
   document.getElementById('year').textContent = new Date().getFullYear();
@@ -1486,7 +1427,6 @@
   renderPayments();
   updateButton();
   initScrollAnimations();
-  fetchPrices();
 </script>
 
 
