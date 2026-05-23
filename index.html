@@ -196,7 +196,7 @@
     .header-sub { font-size: 0.63rem; color: var(--text-3); font-weight: 500; margin-top: 2px; letter-spacing:.3px; }
 
     .install-header-btn {
-      display:none; align-items:center; gap:6px;
+      display:flex; align-items:center; gap:6px;
       background: var(--grad-btn);
       border-radius: var(--r-sm); padding: 7px 14px;
       color: #fff; font-size: 0.7rem; font-weight: 700;
@@ -1513,22 +1513,31 @@
     }
 
     // PWA Install
-    let deferredPrompt;
+    let deferredPrompt = null;
+
+    // رسالة التثبيت اليدوي عند عدم توفر الحدث التلقائي
+    function showManualInstallTip() {
+      const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      const msg = isIOS
+        ? '📲 لتثبيت التطبيق على iPhone:\nاضغط زر المشاركة ⬆️ ثم اختر "Add to Home Screen"'
+        : '📲 لتثبيت التطبيق:\nافتح قائمة المتصفح (⋮) ثم اختر "تثبيت التطبيق" أو "Add to Home Screen"';
+      alert(msg);
+    }
 
     async function triggerInstall() {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      document.getElementById('install-header-btn').classList.remove('show');
-      document.getElementById('install-banner').classList.remove('show');
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        document.getElementById('install-banner').classList.remove('show');
+      } else {
+        showManualInstallTip();
+      }
     }
 
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      // إظهار زر الهيدر فوراً
-      document.getElementById('install-header-btn').classList.add('show');
       // إظهار البانر بعد 3 ثواني
       setTimeout(() => {
         document.getElementById('install-banner').classList.add('show');
@@ -1539,7 +1548,7 @@
     document.getElementById('install-btn').addEventListener('click', triggerInstall);
 
     window.addEventListener('appinstalled', () => {
-      document.getElementById('install-header-btn').classList.remove('show');
+      document.getElementById('install-header-btn').style.display = 'none';
       document.getElementById('install-banner').classList.remove('show');
     });
   </script>
