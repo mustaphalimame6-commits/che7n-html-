@@ -1512,6 +1512,14 @@
       });
     }
 
+    // إخفاء زر التثبيت إذا كان التطبيق مثبتاً بالفعل (standalone)
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+                      || window.navigator.standalone === true;
+    if (isStandalone) {
+      const btn = document.getElementById('install-header-btn');
+      if (btn) btn.style.display = 'none';
+    }
+
     // PWA Install
     let deferredPrompt = null;
 
