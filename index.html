@@ -645,6 +645,28 @@
     .install-btn-yes { background:#fff; color:#1877F2; border:none; border-radius:var(--r-sm); padding:8px 16px; font-size:0.78rem; font-weight:800; cursor:pointer; font-family:Cairo,sans-serif; white-space:nowrap; }
     .install-btn-no  { background:none; border:none; color:rgba(255,255,255,0.55); font-size:1.1rem; cursor:pointer; padding:4px; }
 
+    /* ═══════ RECEIPT UPLOAD ═══════ */
+    .receipt-upload-box {
+      border: 2px dashed rgba(24,119,242,0.35);
+      border-radius: var(--r-lg);
+      padding: 24px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      background: rgba(24,119,242,0.03);
+      animation: borderFlow 3s ease-in-out infinite;
+    }
+    .receipt-upload-box:hover {
+      border-color: rgba(24,119,242,0.65);
+      background: rgba(24,119,242,0.07);
+    }
+    .receipt-upload-box.has-image {
+      border-style: solid;
+      border-color: rgba(34,197,94,0.50);
+      background: rgba(34,197,94,0.04);
+      animation: none;
+    }
+
     /* ═══════ WA FLOAT ═══════ */
     .wa-float { position:fixed; bottom:24px; left:20px; z-index:200; width:54px; height:54px; border-radius:50%; background:linear-gradient(135deg,#22c55e,#16a34a); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 20px rgba(34,197,94,0.45); transition:opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; animation:pulseWa 2.5s ease-in-out infinite; }
     .wa-float:hover { transform:scale(1.08); box-shadow:0 6px 28px rgba(34,197,94,0.65); }
@@ -793,8 +815,8 @@
           <div class="howto-step">
             <div class="howto-num" style="font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;color:var(--blue-light);background:linear-gradient(135deg,rgba(24,119,242,0.13),rgba(24,119,242,0.05));border:1.5px solid rgba(24,119,242,0.30);">5</div>
             <div>
-              <div class="howto-text">رقم المحول</div>
-              <div class="howto-sub">أدخل رقم هاتفك الذي حوّلت منه واضغط إرسال</div>
+              <div class="howto-text">ارفع الإيصال وأرسل</div>
+              <div class="howto-sub">ارفع صورة إيصال الدفع واضغط "أرسل الطلب"</div>
             </div>
           </div>
         </div>
@@ -885,17 +907,52 @@
           </div>
         </div>
 
-        <!-- Step 5: WhatsApp -->
+        <!-- Step 5: Receipt Upload + Order Button -->
         <section class="section fade-up">
-          <button class="wa-btn" id="wa-btn" disabled onclick="sendWhatsApp()">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-              <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.856L.057 23.215a.75.75 0 00.928.928l5.359-1.475A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.9 0-3.68-.497-5.223-1.367l-.374-.214-3.882 1.068 1.068-3.882-.214-.374A9.958 9.958 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
-            </svg>
-            اطلب عبر واتساب
+          <div class="section-label">
+            <span class="step-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </span>
+            إيصال الدفع
+          </div>
+          <div class="receipt-upload-box" id="receipt-upload-box" onclick="document.getElementById('receipt-input').click()">
+            <input type="file" id="receipt-input" accept="image/*" style="display:none" onchange="handleReceiptUpload(event)" />
+            <div id="receipt-placeholder">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--blue-light)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <div style="font-size:0.85rem;font-weight:700;color:var(--text-1);margin-top:8px">ارفع إيصال الدفع</div>
+              <div style="font-size:0.72rem;color:var(--text-2);margin-top:4px">اضغط هنا لاختيار الصورة</div>
+            </div>
+            <img id="receipt-preview" src="" alt="إيصال" style="display:none;width:100%;border-radius:10px;max-height:200px;object-fit:contain;" />
+          </div>
+          <p class="field-hint" style="margin-top:8px">📎 ارفع صورة إيصال التحويل لتأكيد طلبك</p>
+
+          <button class="wa-btn" id="wa-btn" disabled onclick="sendOrder()" style="margin-top:18px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="22" height="22" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+            أرسل الطلب الآن
           </button>
           <p class="btn-hint-text" id="btn-hint">الرجاء اختيار باقة أولاً</p>
         </section>
+
+        <!-- Order Confirmation Card -->
+        <div id="order-confirm-card" style="display:none" class="section fade-up">
+          <div style="background:rgba(34,197,94,0.07);border:1.5px solid rgba(34,197,94,0.30);border-radius:var(--r-lg);padding:22px;text-align:center;">
+            <div style="font-size:2.5rem;margin-bottom:10px">✅</div>
+            <div style="font-size:1rem;font-weight:900;color:#4ade80;margin-bottom:6px">تم استقبال طلبك!</div>
+            <div style="font-size:0.78rem;color:var(--text-2);margin-bottom:14px">سيتم معالجة طلبك خلال دقائق</div>
+            <div style="background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:var(--r-md);padding:14px;margin-bottom:10px;">
+              <div style="font-size:0.7rem;color:var(--text-2);margin-bottom:4px">رقم طلبك</div>
+              <div id="confirm-order-id" style="font-family:'Orbitron',monospace;font-size:1.2rem;font-weight:900;color:var(--blue-light)"></div>
+              <div id="confirm-details"></div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:8px;font-size:0.78rem;font-weight:700;margin-bottom:16px;">
+              <span style="color:var(--text-2)">الحالة:</span>
+              <span id="confirm-status"></span>
+            </div>
+            <button id="new-order-btn" onclick="clearOrder()" style="display:none;align-items:center;gap:8px;background:rgba(24,119,242,0.12);border:1px solid rgba(24,119,242,0.35);color:var(--blue-light);border-radius:var(--r-md);padding:10px 20px;font-size:0.8rem;font-weight:700;font-family:Cairo,sans-serif;cursor:pointer;">
+              🔄 طلب جديد
+            </button>
+          </div>
+        </div>
 
       </div><!-- /order-section -->
 
@@ -1096,6 +1153,8 @@
   let selectedPayment = null;
   let copyNumberValue = '';
   let copyAmountValue = '';
+  let receiptFile     = null;
+  let receiptBase64   = null;
 
   // ══════════════════════════════════════════
   //  RENDER GAMES
@@ -1267,6 +1326,7 @@
     if (!idValid)               { hint.textContent = 'الرجاء إدخال معرف اللاعب';          btn.disabled = true; return; }
     if (!selectedPayment)       { hint.textContent = 'الرجاء اختيار طريقة الدفع';         btn.disabled = true; return; }
     if (sender.length <= 4)     { hint.textContent = 'الرجاء إدخال رقم المحول';            btn.disabled = true; return; }
+    if (!receiptBase64)         { hint.textContent = 'الرجاء رفع إيصال الدفع';             btn.disabled = true; return; }
 
     hint.textContent = '';
     btn.disabled = false;
@@ -1318,63 +1378,192 @@
   }
 
   // ══════════════════════════════════════════
-  //  WHATSAPP
+  //  RECEIPT UPLOAD
   // ══════════════════════════════════════════
-  function sendWhatsApp() {
+  function handleReceiptUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    receiptFile = file;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      receiptBase64 = e.target.result.split(',')[1];
+      const preview = document.getElementById('receipt-preview');
+      const placeholder = document.getElementById('receipt-placeholder');
+      const box = document.getElementById('receipt-upload-box');
+      preview.src = e.target.result;
+      preview.style.display = 'block';
+      placeholder.style.display = 'none';
+      box.classList.add('has-image');
+      updateButton();
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ══════════════════════════════════════════
+  //  SEND ORDER TO TELEGRAM
+  // ══════════════════════════════════════════
+  const TG_TOKEN  = '8959164907:AAGDS1cR4R4vIsb4dljdmuIry0xC0Zyxy08';
+  const TG_CHATID = '8886680538';
+
+  async function sendOrder() {
     if (!selectedPkg || !selectedPayment) return;
     const btn      = document.getElementById('wa-btn');
     const playerId = document.getElementById('player-id-input').value.trim();
     const sender   = document.getElementById('sender-input').value.trim();
 
-    // ══ حفظ في Google Sheets ══
-    const orderNum = 'CH7N-' + Math.floor(1000 + Math.random() * 9000);
-    fetch('https://script.google.com/macros/s/AKfycbxwPOIXSLnWdUQspY6cYRhaQVlALwjhCyWArKJvGhNOnfm3cPSa05x21Eot-6e5tzRX/exec', {
-      method: 'POST',
-      body: new URLSearchParams({
-        orderId:       orderNum,
-        game:          selectedGame.name,
-        package:       `${selectedPkg.amount.toLocaleString('en-US')} ${selectedPkg.currency}`,
-        playerId:      playerId || '—',
-        price:         selectedPkg.price,
-        paymentMethod: selectedPayment.name + ' | ' + sender
-      })
-    }).catch(() => {});
-    // ═════════════════════════
-
-    btn.classList.add('loading');
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span><span>جارٍ الإرسال...</span>';
+    btn.classList.add('loading');
 
+    const orderNum = 'CH7N-' + Math.floor(1000 + Math.random() * 9000);
     const now = new Date();
-    const timeStr = now.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit', hour12:false});
-    const dateStr = now.toLocaleDateString('en-GB', {day:'2-digit', month:'2-digit', year:'numeric'});
+    const timeStr = now.toLocaleTimeString('ar-MA', {hour:'2-digit', minute:'2-digit', hour12:false});
+    const dateStr = now.toLocaleDateString('ar-MA', {day:'2-digit', month:'2-digit', year:'numeric'});
 
-    const lines = [
-      `🎮 طلب شحن جديد`, `🔢 رقم الطلب: #${orderNum}`,
-      `📅 التاريخ: ${dateStr} — ${timeStr}`, '',
-      `🕹️ اللعبة: ${selectedGame.name}`,
-      `💎 الباقة: ${selectedPkg.amount.toLocaleString('en-US')} ${selectedPkg.currency}`,
-      ...(selectedPkg.levelUpPass ? [`🎁 هدية مجانية: +${selectedPkg.levelUpPass.diamonds} 💎 حزمة ترقية`] : []),
-      `💰 السعر: ${selectedPkg.price.toLocaleString('en-US')} MRU`,
-    ];
-    if (playerId) lines.push(`🆔 معرف اللاعب: ${playerId}`);
-    lines.push(`💳 طريقة الدفع: ${selectedPayment.name}`, `📲 رقم المحول: ${sender}`, '', '⚠️ يرجى إرسال إيصال الدفع لتأكيد الطلب', '', '— CH7N ⚡');
+    // نص الرسالة لتيليجرام
+    const msgLines = [
+      `🆕 *طلب جديد — ${orderNum}*`,
+      `─────────────────`,
+      `🎮 *اللعبة:* ${selectedGame.name}`,
+      `💎 *الباقة:* ${selectedPkg.isPass ? selectedPkg.currency : selectedPkg.amount.toLocaleString('en-US') + ' ' + selectedPkg.currency}`,
+      selectedPkg.levelUpPass ? `🎁 *هدية مجانية:* +${selectedPkg.levelUpPass.diamonds} 💎` : null,
+      `💰 *السعر:* ${selectedPkg.price.toLocaleString('en-US')} MRU`,
+      playerId ? `🆔 *معرف اللاعب:* \`${playerId}\`` : null,
+      `💳 *طريقة الدفع:* ${selectedPayment.name}`,
+      `📲 *رقم المحول:* \`${sender}\``,
+      `📅 *الوقت:* ${dateStr} — ${timeStr}`,
+      `─────────────────`,
+      `📊 *الحالة:* ⏳ Pending`,
+    ].filter(Boolean).join('\n');
 
-    setTimeout(() => {
-      window.open(`https://wa.me/33775202?text=${encodeURIComponent(lines.join('\n'))}`, '_blank', 'noopener,noreferrer');
-      // رسالة تأكيد
-      const toast = document.getElementById('success-toast');
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 4000);
-      btn.classList.remove('loading');
+    // أزرار التحكم inline
+    const replyMarkup = JSON.stringify({
+      inline_keyboard: [[
+        { text: '✅ تم التنفيذ',    callback_data: `done_${orderNum}` },
+        { text: '⏳ قيد المعالجة',  callback_data: `proc_${orderNum}` },
+        { text: '❌ فشل',           callback_data: `fail_${orderNum}` },
+      ]]
+    });
+
+    try {
+      // إرسال نص الطلب
+      await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: TG_CHATID,
+          text: msgLines,
+          parse_mode: 'Markdown',
+          reply_markup: replyMarkup
+        })
+      });
+
+      // إرسال الإيصال إن وجد
+      if (receiptBase64 && receiptFile) {
+        const formData = new FormData();
+        formData.append('chat_id', TG_CHATID);
+        formData.append('caption', `📎 إيصال الطلب ${orderNum}`);
+        formData.append('photo', receiptFile);
+        await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendPhoto`, {
+          method: 'POST',
+          body: formData
+        });
+      }
+
+      // حفظ في Google Sheets (اختياري)
+      fetch('https://script.google.com/macros/s/AKfycbxwPOIXSLnWdUQspY6cYRhaQVlALwjhCyWArKJvGhNOnfm3cPSa05x21Eot-6e5tzRX/exec', {
+        method: 'POST',
+        body: new URLSearchParams({
+          orderId: orderNum,
+          game: selectedGame.name,
+          package: selectedPkg.isPass ? selectedPkg.currency : `${selectedPkg.amount} ${selectedPkg.currency}`,
+          playerId: playerId || '—',
+          price: selectedPkg.price,
+          paymentMethod: selectedPayment.name + ' | ' + sender
+        })
+      }).catch(() => {});
+
+      // حفظ الطلب في localStorage
+      const savedOrder = {
+        orderId: orderNum,
+        game: selectedGame.name,
+        package: selectedPkg.isPass ? selectedPkg.currency : `${selectedPkg.amount.toLocaleString('en-US')} ${selectedPkg.currency}`,
+        price: selectedPkg.price,
+        status: 'pending',
+        time: new Date().toISOString()
+      };
+      localStorage.setItem('ch7n_last_order', JSON.stringify(savedOrder));
+
+      // إظهار بطاقة التأكيد
+      showOrderCard(savedOrder);
+      document.getElementById('order-confirm-card').scrollIntoView({behavior:'smooth', block:'center'});
+
+      // إخفاء الزر
+      btn.style.display = 'none';
+
+    } catch (err) {
       btn.disabled = false;
-      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.856L.057 23.215a.75.75 0 00.928.928l5.359-1.475A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.9 0-3.68-.497-5.223-1.367l-.374-.214-3.882 1.068 1.068-3.882-.214-.374A9.958 9.958 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>اطلب عبر واتساب`;
-    }, 650);
+      btn.classList.remove('loading');
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="22" height="22" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>أعد الإرسال`;
+      alert('حدث خطأ، حاول مرة أخرى');
+    }
   }
 
   // ══════════════════════════════════════════
-  //  PARTICLES
+  //  ORDER CARD — عرض واستعادة
   // ══════════════════════════════════════════
+  const STATUS_MAP = {
+    pending:  { text: '⏳ جاري المراجعة',  color: '#f59e0b', bg: 'rgba(245,158,11,0.1)',  border: 'rgba(245,158,11,0.3)' },
+    done:     { text: '✅ تم التنفيذ',      color: '#4ade80', bg: 'rgba(34,197,94,0.1)',   border: 'rgba(34,197,94,0.3)'  },
+    proc:     { text: '⚙️ قيد المعالجة',   color: '#60a5fa', bg: 'rgba(96,165,250,0.1)',  border: 'rgba(96,165,250,0.3)' },
+    fail:     { text: '❌ فشل الطلب',      color: '#f87171', bg: 'rgba(248,113,113,0.1)', border: 'rgba(248,113,113,0.3)' },
+  };
+
+  function showOrderCard(order) {
+    const card = document.getElementById('order-confirm-card');
+    const st   = STATUS_MAP[order.status] || STATUS_MAP.pending;
+    const date = new Date(order.time).toLocaleString('ar-MA', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+
+    card.style.display = 'block';
+    document.getElementById('confirm-order-id').textContent = '#' + order.orderId;
+    document.getElementById('confirm-status').textContent   = st.text;
+    document.getElementById('confirm-status').style.cssText =
+      `color:${st.color};background:${st.bg};border:1px solid ${st.border};padding:3px 12px;border-radius:20px;font-weight:700;`;
+
+    // تفاصيل إضافية
+    const detailEl = document.getElementById('confirm-details');
+    if (detailEl) {
+      detailEl.innerHTML = `
+        <div style="font-size:0.72rem;color:var(--text-2);margin-top:10px;line-height:1.9;text-align:right">
+          🎮 ${order.game} &nbsp;·&nbsp; 💎 ${order.package}<br>
+          💰 ${order.price.toLocaleString('en-US')} MRU &nbsp;·&nbsp; 📅 ${date}
+        </div>`;
+    }
+
+    // زر طلب جديد
+    const newBtn = document.getElementById('new-order-btn');
+    if (newBtn) newBtn.style.display = 'inline-flex';
+  }
+
+  function clearOrder() {
+    localStorage.removeItem('ch7n_last_order');
+    location.reload();
+  }
+
+  // استعادة الطلب عند تحميل الصفحة
+  window.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('ch7n_last_order');
+    if (saved) {
+      try {
+        const order = JSON.parse(saved);
+        // أظهر البطاقة فوراً في الأعلى
+        showOrderCard(order);
+        // أخفِ الزر القديم
+        const btn = document.getElementById('wa-btn');
+        if (btn) btn.style.display = 'none';
+      } catch(e) { localStorage.removeItem('ch7n_last_order'); }
+    }
+  });
   function initParticles() {
     const container = document.getElementById('particles');
     for (let i = 0; i < 20; i++) {
@@ -1447,7 +1636,7 @@
 
   <!-- رسالة تأكيد -->
   <div class="success-toast" id="success-toast">
-    ✅ تم إرسال طلبك! سنتواصل معك خلال دقائق
+    ✅ تم إرسال طلبك! سيتم معالجته خلال دقائق
   </div>
 
   <!-- PWA Install Banner -->
