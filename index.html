@@ -1402,7 +1402,7 @@
   // ══════════════════════════════════════════
   //  SEND ORDER TO TELEGRAM
   // ══════════════════════════════════════════
-  const TG_TOKEN  = '8959164907:AAGDS1cR4R4vIsb4dljdmuIry0xC0Zyxy08';
+  const TG_TOKEN  = '8959164907:AAGDS1cR4R4vIsb4dljdmuIry0xC0ZyxyO8';
   const TG_CHATID = '8886680538';
 
   async function sendOrder() {
@@ -1421,42 +1421,43 @@
     const dateStr = now.toLocaleDateString('ar-MA', {day:'2-digit', month:'2-digit', year:'numeric'});
 
     // نص الرسالة لتيليجرام
+    const pkg = selectedPkg.isPass ? selectedPkg.currency : `${selectedPkg.amount.toLocaleString('en-US')} ${selectedPkg.currency}`;
     const msgLines = [
-      `🆕 *طلب جديد — ${orderNum}*`,
-      `─────────────────`,
-      `🎮 *اللعبة:* ${selectedGame.name}`,
-      `💎 *الباقة:* ${selectedPkg.isPass ? selectedPkg.currency : selectedPkg.amount.toLocaleString('en-US') + ' ' + selectedPkg.currency}`,
-      selectedPkg.levelUpPass ? `🎁 *هدية مجانية:* +${selectedPkg.levelUpPass.diamonds} 💎` : null,
-      `💰 *السعر:* ${selectedPkg.price.toLocaleString('en-US')} MRU`,
-      playerId ? `🆔 *معرف اللاعب:* \`${playerId}\`` : null,
-      `💳 *طريقة الدفع:* ${selectedPayment.name}`,
-      `📲 *رقم المحول:* \`${sender}\``,
-      `📅 *الوقت:* ${dateStr} — ${timeStr}`,
-      `─────────────────`,
-      `📊 *الحالة:* ⏳ Pending`,
+      `🆕 <b>طلب جديد — ${orderNum}</b>`,
+      ``,
+      `🎮 <b>اللعبة:</b> ${selectedGame.name}`,
+      `💎 <b>الباقة:</b> ${pkg}`,
+      selectedPkg.levelUpPass ? `🎁 <b>هدية مجانية:</b> +${selectedPkg.levelUpPass.diamonds} 💎` : null,
+      `💰 <b>السعر:</b> ${selectedPkg.price.toLocaleString('en-US')} MRU`,
+      playerId ? `🆔 <b>معرف اللاعب:</b> <code>${playerId}</code>` : null,
+      `💳 <b>طريقة الدفع:</b> ${selectedPayment.name}`,
+      `📲 <b>رقم المحول:</b> <code>${sender}</code>`,
+      `📅 <b>الوقت:</b> ${dateStr} — ${timeStr}`,
+      ``,
+      `📊 <b>الحالة:</b> ⏳ Pending`,
     ].filter(Boolean).join('\n');
-
-    // أزرار التحكم inline
-    const replyMarkup = JSON.stringify({
-      inline_keyboard: [[
-        { text: '✅ تم التنفيذ',    callback_data: `done_${orderNum}` },
-        { text: '⏳ قيد المعالجة',  callback_data: `proc_${orderNum}` },
-        { text: '❌ فشل',           callback_data: `fail_${orderNum}` },
-      ]]
-    });
 
     try {
       // إرسال نص الطلب
-      await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+      const tgRes = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           chat_id: TG_CHATID,
           text: msgLines,
-          parse_mode: 'Markdown',
-          reply_markup: replyMarkup
+          parse_mode: 'HTML',
+          reply_markup: {
+            inline_keyboard: [[
+              { text: '✅ تم التنفيذ',   callback_data: `done_${orderNum}` },
+              { text: '⏳ قيد المعالجة', callback_data: `proc_${orderNum}` },
+              { text: '❌ فشل',          callback_data: `fail_${orderNum}` },
+            ]]
+          }
         })
       });
+
+      const tgData = await tgRes.json();
+      if (!tgData.ok) throw new Error(tgData.description || 'Telegram error');
 
       // إرسال الإيصال إن وجد
       if (receiptBase64 && receiptFile) {
